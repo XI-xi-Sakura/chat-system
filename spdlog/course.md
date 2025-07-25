@@ -21,18 +21,8 @@ sudo apt-get install libspdlog - dev
 # For CentOS or RHEL
 sudo yum install spdlog - dev
 ```
-源码安装：
-```bash
-# 克隆仓库
-git clone https://github.com/gabime/spdlog.git
-cd spdlog
-# 创建构建目录
-mkdir build && cd build
-# 构建和安装
-cmake..
-make - j
-sudo make install
-```
+
+
 
 ### 使用
 
@@ -72,6 +62,7 @@ logger->set_pattern("%Y-%m-%d %H:%M:%S [%t] [%l] %v");
 - %t：线程 ID（thread ID）。
 - %l：日志级别名称（level name，如 INFO，DEBUG，ERROR 等）。
 - %v：日志内容（message）。
+- %n：日志器名称（Logger name）。  
 
 日志记录器类：
 创建一个基本的日志记录器，并设置日志级别和输出模式：
@@ -80,11 +71,43 @@ namespace spdlog {
     class logger {
     public:
         logger(std::string name);
+
+        /**
+         * 构造一个新的日志记录器对象，并关联单个日志输出目标
+         * 
+         * name 日志记录器的名称
+         * single_sink 单个日志输出目标的智能指针
+         */
         logger(std::string name, sink_ptr single_sink);
+
+        /**
+         * 构造一个新的日志记录器对象，并关联多个日志输出目标
+         * 
+         * name 日志记录器的名称
+         * sinks 多个日志输出目标的初始化列表
+         */
         logger(std::string name, sinks_init_list sinks);
-        logger(std::string name, sink_ptr single_sink);
+
+        /**
+         * 设置日志记录器的日志级别
+         * 
+         * log_level 日志级别
+         */
         void set_level(level::level_enum log_level);
+
+        /**
+         * 设置日志记录器的格式化器
+         * 
+         * f 格式化器的智能指针
+         */
         void set_formatter(std::unique_ptr<formatter> f);
+
+        /**
+         * 记录对应级别的日志消息
+         * 
+         * fmt 格式化字符串
+         * args 格式化参数
+         */
         template<typename... Args>
         void trace(fmt::format_string<Args...> fmt, Args &&... args);
         template<typename... Args>
@@ -97,6 +120,8 @@ namespace spdlog {
         void error(fmt::format_string<Args...> fmt, Args &&... args);
         template<typename... Args>
         void critical(fmt::format_string<Args...> fmt, Args &&... args);
+
+
         void flush(); // 刷新日志
         // 立即刷新指定级别的日志
         void flush_on(level::level_enum log_level);
@@ -146,89 +171,93 @@ async_logger->info("This is an asynchronous info message");
 ```
 日志记录器工厂类：
 ```cpp
-using async_factory = spdlog::async_factory_impl<async_overflow_policy::block>;
+C++
+using async_factory = async_factory_impl<async_overflow_policy::block>;
+
+
 template<typename Sink, typename... SinkArgs>
 inline std::shared_ptr<spdlog::logger> create_async(
-        std::string logger_name,
-        SinkArgs &&... sink_args) {
-    return async_factory::create<Sink>(std::move(logger_name), std::forward<SinkArgs>(sink_args)...);
-}
-// 创建一个彩色输出到标准输出的日志记录器，默认工厂创建同步日志记录器
+    std::string logger_name,
+    SinkArgs &&... sink_args)
+
+//创建一个彩色输出到标准输出的日志记录器，默认工厂创建同步日志记录器
 template<typename Factory = spdlog::synchronous_factory>
-std::shared_ptr<spdlog::logger> stdout_color_mt(
-        const std::string &logger_name,
-        color_mode mode = color_mode::automatic);
-// 标准错误
+std::shared_ptr<logger> stdout_color_mt(
+    const std::string &logger_name,
+    color_mode mode = color_mode::automatic);
+//标准错误
 template<typename Factory = spdlog::synchronous_factory>
-std::shared_ptr<spdlog::logger> stderr_color_mt(
-        const std::string &logger_name,
-        color_mode mode = color_mode::automatic);
-// 指定文件
+std::shared_ptr<logger> stderr_color_mt(
+    const std::string &logger_name,
+    color_mode mode = color_mode::automatic);
+//指定文件
 template<typename Factory = spdlog::synchronous_factory>
-std::shared_ptr<spdlog::logger> basic_file_mt(
-        const std::string &logger_name,
-        const std::string &filename,
-        bool truncate = false,
-        const file_event_handlers &event_handlers = {});
-// 循环文件
+std::shared_ptr<logger> basic_logger_mt(
+    const std::string &logger_name,
+    const filename_t &filename,
+    bool truncate = false,
+    const file_event_handlers &event_handlers = {})
+//循环文件
 template<typename Factory = spdlog::synchronous_factory>
-std::shared_ptr<spdlog::logger> rotating_file_mt(
-        const std::string &logger_name,
-        const std::string &filename,
-        size_t max_file_size,
-        size_t max_files,
-        bool rotate_on_open = false,
-        const file_event_handlers &event_handlers = {});
+std::shared_ptr<logger> rotating_logger_mt(
+    const std::string &logger_name,
+    const filename_t &filename,
+    size_t max_file_size,
+    size_t max_files,
+    bool rotate_on_open = false)
+...
+
+日志落地类
 ```
 日志落地类
 ```cpp
 namespace spdlog {
-    namespace sinks {
-        class sink {
-        public:
-            virtual ~sink() = default;
-            virtual void log(const details::log_msg &msg) = 0;
-            virtual void flush() = 0;
-            virtual void set_pattern(const std::string &pattern) = 0;
-            virtual void set_formatter(std::unique_ptr<formatter> sink_formatter) = 0;
-            void set_level(level::level_enum log_level);
-            void set_filter(log_clock::time_point last_flush,
-                            const std::string &filename,
-                            size_t max_files,
-                            bool rotate_on_open = false,
-                            const file_event_handlers &event_handlers = {});
-            using stdout_sink_mt = stdout_sink<std::mutex>;
-            using stderr_sink_mt = stderr_sink<std::mutex>;
-            using stdout_color_sink_mt = stdout_color_sink<std::mutex>;
-            using stderr_color_sink_mt = stderr_color_sink<std::mutex>;
-            // 使用日期文件创建一个 sink，则会新创建以新的日期文件
-            sink_ptr rotating_file_sink_mt(const std::string &filename,
-                                           size_t max_size,
-                                           size_t max_files,
-                                           bool rotate_on_open = false,
-                                           const file_event_handlers &event_handlers = {});
-            using rotating_file_sink_mt = rotating_file_sink<std::mutex>;
-            // 使用文件事件
-            sink_ptr basic_file_sink_mt(const std::string &filename,
-                                        bool truncate = false,
-                                        const file_event_handlers &event_handlers = {});
-            using basic_file_sink_mt = basic_file_sink<std::mutex>;
-            using daily_file_sink_mt = daily_file_sink<std::mutex>;
-            using hourly_file_sink_mt = hourly_file_sink<std::mutex>;
-            using tcp_sink_mt = tcp_sink<std::mutex>;
-            using udp_sink_mt = udp_sink<std::mutex>;
-            // 以下加锁：多线程版本，用于多线程，对单线程是安全的。
-            // 不加锁：单线程版本，不用加锁，效率更高。
-        };
-    }
+namespace sinks {
+    class SPDLOG_API sink
+    {
+    public:
+        virtual ~sink() = default;
+        virtual void log(const details::log_msg &msg) = 0;
+
+
+        virtual void flush() = 0;
+        virtual void set_pattern(const std::string &pattern) = 0;
+        virtual void set_formatter(std::unique_ptr<spdlog::formatter> sink_formatter) = 0;
+
+        void set_level(level::level_enum log_level);
+    };
+
+    using stdout_sink_mt;
+    using stderr_sink_mt;
+    using stdout_color_sink_mt;
+    using stderr_color_sink_mt;
+    // 滚动日志文件 - 超过一定大小则自动重新创建新的日志文件
+    sink_ptr rotating_file_sink(filename_t base_filename,
+                                std::size_t max_size,
+                                std::size_t max_files,
+                                bool rotate_on_open = false,
+                                const file_event_handlers &event_handlers = {});
+    using rotating_file_sink_mt = rotating_file_sink<std::mutex>;
+    // 普通的文件落地
+    sink_ptr basic_file_sink(const filename_t &filename,
+                             bool truncate = false,
+                             const file_event_handlers &event_handlers = {});
+    using basic_file_sink_mt = basic_file_sink<std::mutex>;
+
+    using kafka_sink_mt = kafka_sink<std::mutex>;
+    using mongo_sink_mt = mongo_sink<std::mutex>;
+    using tcp_sink_mt = tcp_sink<std::mutex>;
+    using udp_sink_mt = udp_sink<std::mutex>;
+    //...（省略的其他可能代码）
+    // /*_st: 单线程版本，不用加锁，效率更高。
+    // /*_mt: 多线程版本，用于多线程程序是线程安全的。
+}
 }
 ```
 全局接口：
 ```cpp
 // 输出等级设置接口
 void set_level(level::level_enum log_level);
-// 立即刷新策略
-void flush_on(level::level_enum log_level);
 // 日志刷新策略，每隔（rd）刷新一次
 void flush_every(std::chrono::seconds interval);
 // 日志刷新策略，触发等级（level）则刷新
@@ -247,11 +276,12 @@ logger->critical("This is a critical message");
 使用示例
 ```cpp
 #include <spdlog/spdlog.h>
-#include <spdlog/sinks/stdout_color_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/async.h>
 #include <spdlog/async_logger.h>
-void multi_sink_example() {
+void multi_sink_example()
+{
     // 创建一个标准输出的 sink 对象
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     console_sink->set_pattern("[%^%l%$] %v");
@@ -266,18 +296,21 @@ void multi_sink_example() {
     logger.info("This will appear in both console and file");
     logger.debug("This will appear only in the file");
 }
-void async_example() {
+void async_example()
+{
     // 初始化线程池，3728 为队列大小，1 为线程数，线程数属性是可设置
     spdlog::init_thread_pool(3728, 1);
     // 通过工厂模式创建异步日志记录器的同时，会在内部创建默认线程池作为异步通道
     auto async_factory = spdlog::create_async_nb<spdlog::sinks::stdout_color_sink_mt>("async_logger");
     async_factory->set_pattern("[%Y-%m-%d %H:%M:%S] [%t] [%l] %v");
     // 要注意的是，在多参数的时候，spdlog 并非使用 %d 这种通配符来匹配参数，而是用多参数的方式来匹配，所以要注意使用方式
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 10; ++i)
+    {
         async_factory->info("Async message #{}", i, "hello");
     }
 }
-int main() {
+int main()
+{
     multi_sink_example();
     async_example();
     return 0;
