@@ -165,6 +165,7 @@ class Response {
     std::vector<Event> const& events(); // 触发的事件
 }
 
+// 租约保活对象
 class KeepAlive {
     KeepAlive(Client const& client, int ttl, int64_t lease_id = 0);
     // 返回租约 ID
@@ -197,6 +198,7 @@ class Client {
     pplx::task<Response> lock(std::string const& key);
 }
 
+// 数据一旦发生变化，进行通知
 class Watcher {
     Watcher(Client const& client,
             std::string const& key, // 要监控的键值对 key
@@ -207,7 +209,8 @@ class Watcher {
             std::function<void(Response)> callback,
             bool recursive = false);
     // 阻塞等待，直到监控任务被停止
-    bool wait();
+    bool Wait();
+    // 取消监控任务
     bool Cancel();
 }
 ```
@@ -221,7 +224,8 @@ registry.cc
 #include <etcd/KeepAlive.hpp>
 #include <thread>
 
-int main() {
+int main()
+{
     std::string registry_host = "http://127.0.0.1:2379";
     // 为了防止多主机注册相同服务时，信息覆盖，
     // 因此每个主机在服务名后加入自己的实例名称，相当于各有各的服务-主机键值对
@@ -236,11 +240,13 @@ int main() {
     // auto lease_id = resp.value().lease(); // 获取租约 ID
     // 租约保活的同时，创建一个保活的 3s 租约保活对象--也就是一旦断开连接，3s 后租约失效
     std::shared_ptr<etcd::KeepAlive> keepalive = etcd.leasekeepalive(3).get();
-    auto lease_id = keepalive->lease();
+    auto lease_id = keepalive->Lease();
     auto resp_task = etcd.put(service_key, service_host, lease_id); // 注册服务
-    auto resp = resp_task.get();
-    if (!resp.is_ok()) {
-        std::cout << resp.error_message() << std::endl;
+    // 修改变量名，避免冲突
+    auto put_resp = resp_task.get();
+    if (!put_resp.is_ok())
+    {
+        std::cout << put_resp.error_message() << std::endl;
         return -1;
     }
     std::cout << "添加数据成功！" << std::endl;
