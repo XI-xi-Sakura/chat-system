@@ -40,16 +40,46 @@ bool InitLogging(const LoggingSettings& settings);
 ```cpp
 namespace google {
 namespace protobuf {
+    /**
+     * 一个抽象基类，用于表示可调用的回调对象。
+     * 
+     * Closure 类定义了一个接口，任何实现了该接口的类都可以作为回调对象使用。
+     * 通常在异步操作完成时调用这个回调对象。
+     */
     class PROTOBUF_EXPORT Closure {
     public:
+        // 默认构造函数
         Closure() {}
+
+        // 虚析构函数，确保派生类对象能被正确销毁
         virtual ~Closure();
+
+        // 纯虚函数，派生类必须实现该函数，用于执行回调操作
         virtual void Run() = 0;
     };
+
+    /**
+     * 创建一个新的 Closure 回调对象。
+     * 
+     * 该函数接受一个无参数无返回值的函数指针，返回一个指向 Closure 对象的指针。
+     * 当调用这个 Closure 对象的 Run() 方法时，会执行传入的函数。
+     * 
+     * function 无参数无返回值的函数指针。
+     * Closure* 指向新创建的 Closure 对象的指针。
+     */
     inline Closure* NewCallback(void (*function)());
+
+    /**
+     * 用于控制 RPC 调用的类，提供错误处理相关的功能。
+     * 
+     * RpcController 类提供了在 RPC 调用过程中检查错误状态和获取错误信息的方法。
+     */
     class PROTOBUF_EXPORT RpcController {
+        // 检查 RPC 调用是否失败
         bool Failed();
-        std::string ErrorText() ;
+
+        // 获取 RPC 调用失败时的错误文本信息
+        std::string ErrorText();
     }
 }
 }
@@ -60,58 +90,226 @@ namespace protobuf {
 
 ```cpp
 namespace brpc {
-struct ServerOptions {
-    //无数据传输，则指定时间后关闭连接
-    int idle_timeout_sec; // Default: -1 (disabled)
-    int num_threads; // Default: #cpu-cores
-    //.....
-};
+    /**
+     * 服务器选项配置结构体，用于设置服务器运行时的相关参数。
+     */
+    struct ServerOptions {
+        // 若连接在指定时间内无数据传输，则关闭该连接。默认值 -1 表示不启用此功能
+        int idle_timeout_sec; // Default: -1 (disabled)
+        // 服务器启动的线程数量，默认值为 CPU 核心数
+        int num_threads; // Default: #cpu-cores
+        //.....
+    };
 
-enum ServiceOwnership {
-    //添加服务失败时，服务器将负责删除服务对象
-    SERVER_OWNS_SERVICE,
-    //添加服务失败时，服务器也不会删除服务对象
-    SERVER_DOESNT_OWN_SERVICE
-};
-class Server {
-    int AddService(google::protobuf::Service* service,
-                   ServiceOwnership ownership);
-    int Start(int port, const ServerOptions* opt);
-    int Stop(int closewait_ms/*not used anymore*/);
-    int Join();
-    //休眠直到 ctrl+c 按下，或者 stop 和 join 服务器
-    void RunUntilAskedToQuit();
-}
-class ClosureGuard {
-    explicit ClosureGuard(google::protobuf::Closure* done);
-    ~ClosureGuard() { if (_done) _done->Run(); }
-}
-class HttpHeader {
-    void set_content_type(const std::string& type)
-    const std::string* GetHeader(const std::string& key)
-    void SetHeader(const std::string& key,
-                   const std::string& value);
-    const URI& uri() const { return _uri; }
-    HttpMethod method() const { return _method; }
-    void set_method(const HttpMethod method)
-    int status_code()
-    void set_status_code(int status_code);
-}
-class Controller : public google::protobuf::RpcController {
-    void set_timeout_ms(int64_t timeout_ms);
-    void set_max_retry(int max_retry);
-    google::protobuf::Message* response();
-    HttpHeader& http_response();
-    HttpHeader& http_request();
-    bool Failed();
-    std::string ErrorText();
+    /**
+     * 服务所有权枚举，用于指定服务器对添加的服务对象的所有权。
+     */
+    enum ServiceOwnership {
+        // 添加服务失败时，服务器将负责删除服务对象
+        SERVER_OWNS_SERVICE,
+        // 添加服务失败时，服务器也不会删除服务对象
+        SERVER_DOESNT_OWN_SERVICE
+    };
 
-    using AfterRpcRespFnType = std::function<
-        void(Controller* cntl,
-             const google::protobuf::Message* req,
-             const google::protobuf::Message* res)>;
+    /**
+     * @brief 表示一个 BRPC 服务器类，提供启动、停止服务以及管理服务的功能。
+     */
+    class Server {
+    public:
+        /**
+         * 向服务器添加一个 Protobuf 服务。
+         * 
+         * service 指向要添加的 Protobuf 服务对象的指针。
+         * ownership 服务所有权，指定服务器对服务对象的管理方式。
+         * int 成功返回 0，失败返回非 0 值。
+         */
+        int AddService(google::protobuf::Service* service,
+                       ServiceOwnership ownership);
 
-    void set_after_rpc_resp_fn(AfterRpcRespFnType&& fn)
+        /**
+         * 启动服务器监听指定端口。
+         * 
+         * port 服务器监听的端口号。
+         * opt 服务器选项配置指针，可为 NULL 使用默认配置。
+         * int 成功返回 0，失败返回非 0 值。
+         */
+        int Start(int port, const ServerOptions* opt);
+
+        /**
+         * 停止服务器运行。
+         * 
+         * closewait_ms 关闭等待时间（毫秒），此参数已不再使用。
+         * int 成功返回 0，失败返回非 0 值。
+         */
+        int Stop(int closewait_ms/*not used anymore*/);
+
+        /**
+         * 等待服务器停止运行，阻塞当前线程直到服务器完全停止。
+         * 
+         * int 成功返回 0，失败返回非 0 值。
+         */
+        int Join();
+
+        /**
+         * 阻塞当前线程，直到用户按下 Ctrl+C，或者调用 Stop 和 Join 方法停止服务器。
+         */
+        void RunUntilAskedToQuit();
+    };
+
+    /**
+     * 闭包守卫类，用于自动管理 Protobuf 闭包对象的生命周期。
+     * 
+     * 在对象析构时，若闭包对象不为空，则自动调用其 Run 方法。
+     */
+    class ClosureGuard {
+    public:
+        /**
+         * 构造函数，接收一个 Protobuf 闭包对象指针。
+         * 
+         * done 指向 Protobuf 闭包对象的指针。
+         */
+        explicit ClosureGuard(google::protobuf::Closure* done);
+
+        /**
+         *  析构函数，若闭包对象不为空，则调用其 Run 方法。
+         */
+        ~ClosureGuard() { if (_done) _done->Run(); }
+    };
+
+    /**
+     * HTTP 头部信息类，用于管理 HTTP 请求和响应的头部信息。
+     */
+    class HttpHeader {
+    public:
+        /**
+         * 设置 HTTP 内容类型。
+         * 
+         * type 要设置的内容类型字符串。
+         */
+        void set_content_type(const std::string& type);
+
+        /**
+         * 获取指定键的 HTTP 头部值。
+         * 
+         * key 要查找的头部键。
+         * std::string* 指向头部值的指针，若未找到则返回 NULL。
+         */
+        const std::string* GetHeader(const std::string& key);
+
+        /**
+         * 设置指定键的 HTTP 头部值。
+         * 
+         * key 要设置的头部键。
+         * value 要设置的头部值。
+         */
+        void SetHeader(const std::string& key,
+                       const std::string& value);
+
+        /**
+         * 获取 HTTP 请求的 URI。
+         * 
+         * const URI& 引用返回 HTTP 请求的 URI 对象。
+         */
+        const URI& uri() const { return _uri; }
+
+        /**
+         * 获取 HTTP 请求的方法。
+         * 
+         * HttpMethod 返回 HTTP 请求的方法类型。
+         */
+        HttpMethod method() const { return _method; }
+
+        /**
+         * 设置 HTTP 请求的方法。
+         * 
+         * method 要设置的 HTTP 请求方法类型。
+         */
+        void set_method(const HttpMethod method);
+
+        /**
+         * 获取 HTTP 响应的状态码。
+         * 
+         * int 返回 HTTP 响应的状态码。
+         */
+        int status_code();
+
+        /**
+         * 设置 HTTP 响应的状态码。
+         * 
+         * status_code 要设置的 HTTP 响应状态码。
+         */
+        void set_status_code(int status_code);
+    };
+
+    /**
+     * 控制器类，继承自 Protobuf 的 RpcController，用于控制 RPC 调用。
+     */
+    class Controller : public google::protobuf::RpcController {
+    public:
+        /**
+         * 设置 RPC 请求的超时时间。
+         * 
+         * timeout_ms 超时时间，单位为毫秒。
+         */
+        void set_timeout_ms(int64_t timeout_ms);
+
+        /**
+         * 设置 RPC 请求的最大重试次数。
+         * 
+         * max_retry 最大重试次数。
+         */
+        void set_max_retry(int max_retry);
+
+        /**
+         * 获取 RPC 响应消息对象。
+         * 
+         * google::protobuf::Message* 指向响应消息对象的指针。
+         */
+        google::protobuf::Message* response();
+
+        /**
+         * 获取 HTTP 响应头部信息对象。
+         * 
+         * HttpHeader& 引用返回 HTTP 响应头部信息对象。
+         */
+        HttpHeader& http_response();
+
+        /**
+         * 获取 HTTP 请求头部信息对象。
+         * 
+         * HttpHeader& 引用返回 HTTP 请求头部信息对象。
+         */
+        HttpHeader& http_request();
+
+        /**
+         * 检查 RPC 调用是否失败。
+         * 
+         * bool 若调用失败返回 true，否则返回 false。
+         */
+        bool Failed();
+
+        /**
+         * 获取 RPC 调用失败时的错误文本信息。
+         * 
+         * std::string 错误文本信息。
+         */
+        std::string ErrorText();
+
+        /**
+         * 定义 RPC 响应后的回调函数类型。
+         */
+        using AfterRpcRespFnType = std::function<
+            void(Controller* cntl,
+                 const google::protobuf::Message* req,
+                 const google::protobuf::Message* res)>;
+
+        /**
+         * 设置 RPC 响应后的回调函数。
+         * 
+         * fn 要设置的回调函数。
+         */
+        void set_after_rpc_resp_fn(AfterRpcRespFnType&& fn);
+    };
 }
 ```
 
@@ -145,23 +343,31 @@ class Channel : public ChannelBase {
 - 创建 proto 文件 - main.proto
 
 ```protobuf
-syntax="proto3";
+// 定义协议的包名，用于避免命名冲突
 package example;
 
+// 开启 C++ 通用服务支持，这样可以使用通用的服务接口框架
 option cc_generic_services = true;
 
 // 定义 Echo 方法请求参数结构
+// 该消息类型包含一个字符串字段，用于传递需要回声的消息
 message EchoRequest {
+    // 要进行回声处理的消息内容
     string message = 1;
 };
 
 // 定义 Echo 方法响应参数结构
+// 该消息类型包含一个字符串字段，用于返回回声后的消息
 message EchoResponse {
+    // 回声处理后的消息内容
     string message = 1;
 };
 
 // 定义 RPC 远端方法
+// 此服务提供了一个名为 Echo 的远程过程调用方法
 service EchoService {
+    // 定义 Echo 方法，接收一个 EchoRequest 类型的请求
+    // 并返回一个 EchoResponse 类型的响应
     rpc Echo(EchoRequest) returns (EchoResponse);
 };
 ```
