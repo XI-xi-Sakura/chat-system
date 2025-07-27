@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
 
     brpc::Controller *cntl = new brpc::Controller();
     example::EchoResponse *rsp = new example::EchoResponse();
+    
     // stub.Echo(cntl, &req, rsp, nullptr);
     // if (cntl->Failed() == true) {
     //     std::cout << "Rpc调用失败：" << cntl->ErrorText() << std::endl;
@@ -54,7 +55,7 @@ int main(int argc, char *argv[])
 
     auto clusure = google::protobuf::NewCallback(callback, cntl, rsp);
     stub.Echo(cntl, &req, rsp, clusure); // 异步调用
-    
+
     std::cout << "异步调用结束！\n";
     std::this_thread::sleep_for(std::chrono::seconds(3));
     return 0;
