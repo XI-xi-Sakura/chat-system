@@ -125,7 +125,54 @@ sudo systemctl status kibana
 # 访问 Kibana：
 # 在浏览器中访问 Kibana，通常是 http://<your-ip>:5601 
 ```
+## ES 客户端的安装
+代码: https://github.com/seznam/elasticlient
 
+官网: https://seznam.github.io/elasticlient/index.html
+
+ES C++ 的客户端选择并不多，我们这里使用 elasticlient 库，下面进行安装。
+
+```Shell
+# 克隆代码
+git clone https://github.com/seznam/elasticlient
+# 切换目录
+cd elasticlient
+# 更新子模块
+git submodule update --init --recursive
+# 编译代码
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+make
+# 安装
+make install
+```
+cmake 生成 makefile 的过程会遇到一个问题:
+（显示报错内容，大致为找不到 MicroHTTPD 相关路径  ）
+
+解决：需要安装 MicroHTTPD 库
+```Shell
+sudo apt-get install libmicrohttpd-dev
+```
+make 的时候编译出错，这是子模块 googletest 没有编译安装
+
+
+解决：手动安装子模块
+
+```Shell
+cd ../external/googletest/
+mkdir build && cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+make && sudo make install
+```
+安装好重新 cmake 即可。
+
+```Shell
+# 运行测试用例
+make test
+```
+
+至此，elasticlient 安装成功。
 ## ES 核心概念
 
 ### 索引（Index）
@@ -174,8 +221,74 @@ Elasticsearch 与传统关系型数据库对比如下：
 
 ## Kibana 访问 es 进行测试
 通过网页访问 kibana：
-创建索引库：
+
+http://localhost:5601/app/dev_tools#/console
+
+
+### 创建索引库：
 ```json
+# 使用 POST 请求
+POST /user/_doc
+{
+    # 索引的设置部分，用于配置索引的各种参数
+    "settings": {
+        # 分析器相关设置，分析器用于对文本进行分词处理
+        "analysis": {
+            # 自定义分析器配置
+            "analyzer": {
+                # 自定义一个名为 ik 的分析器
+                "ik": {
+                    # 指定该分析器使用 ik_max_word 分词器，ik_max_word 会将文本进行最细粒度的分词
+                    "tokenizer": "ik_max_word"
+                }
+            }
+        }
+    },
+    # 索引的映射部分，定义索引中文档的字段类型和属性
+    "mappings": {
+        # 动态映射配置，设置为 true 表示当插入文档包含新字段时，Elasticsearch 会自动为其添加映射
+        "dynamic": true,
+        # 字段属性配置，定义每个字段的类型和相关属性
+        "properties": {
+            # 昵称字段，用于存储用户昵称
+            "nickname": {
+                # 字段类型为 text，适用于需要进行全文搜索的文本
+                "type": "text",
+                # 指定该字段使用 ik 分析器进行分词处理
+                "analyzer": "ik_max_word"
+            },
+            # 用户 ID 字段，用于唯一标识用户
+            "user_id": {
+                # 字段类型为 keyword，适用于精确匹配、排序和聚合操作，不分词
+                "type": "keyword",
+                # 使用默认分词器
+                "analyzer": "standard"
+            },
+            # 手机号字段，用于存储用户的手机号码
+            "phone": {
+                "type": "keyword",
+                "analyzer": "standard"
+            },
+            # 用户描述字段，用于存储用户的描述信息
+            "description": {
+                # 字段类型为 text，适用于需要进行全文搜索的文本
+                "type": "text",
+                "enabled": false
+            },
+            # 头像 ID 字段，用于存储用户头像的唯一标识
+            "avatar_id": {
+                "type": "keyword",
+                # 仅做存储，不做搜索
+                "enabled": false
+            }
+        }
+    }
+}
+
+```
+
+
+```cpp
 POST /user/_doc
 {
     "settings": {
@@ -215,7 +328,11 @@ POST /user/_doc
 }
 ```
 
-新增数据：
+
+
+
+### 新增数据：
+
 ```json
 POST /user/_doc/_bulk
 {"index":{"_id":"1"}}
@@ -232,7 +349,55 @@ POST /user/_doc/_bulk
 {"user_id": "USER976065c64-9833ebb7-d0455353-35a59195","nickname": "昵称6","phone": "手机号6","description": "签名6","avatar_id": "头像6"}
 ```
 
-查看并搜索数据
+### 查看并搜索数据
+
+```
+GET /user/_doc/_search?pretty
+{
+    "query": {
+        "bool": {
+            // 必须排除的条件，满足这些条件的文档将不会被返回
+            "must_not": [
+                {
+                    // terms 查询，用于匹配字段值是否在指定数组中
+                    "terms": {
+                        // 指定要匹配的字段为 user_id 的 keyword 类型
+                        "user_id.keyword": [
+                            // 排除 user_id 为以下值的文档
+                            "USER4b862aaa-2df8654a-7ebb4b65-e3507f66",
+                            "USER14eeea5-442771b9-0262e455-e4663d1d",
+                            "USER484a6734-03a124f0-996c169d-d05c1869"
+                        ]
+                    }
+                }
+            ],
+            // 可选条件，满足任意一个条件的文档都会被返回
+            "should": [
+                {
+                    // match 查询，用于对指定字段进行全文匹配
+                    "match": {
+                        // 对 user_id 字段进行全文匹配，查找包含 "昵称" 的文档
+                        "user_id": "昵称"
+                    }
+                },
+                {
+                    "match": {
+                        // 对 nickname 字段进行全文匹配，查找包含 "昵称" 的文档
+                        "nickname": "昵称"
+                    }
+                },
+                {
+                    "match": {
+                        // 对 phone 字段进行全文匹配，查找包含 "昵称" 的文档
+                        "phone": "昵称"
+                    }
+                }
+            ]
+        }
+    }
+}
+
+```
 ```json
 GET /user/_doc/_search?pretty
 {
@@ -271,67 +436,43 @@ GET /user/_doc/_search?pretty
 }
 ```
 
-删除索引：
+### 删除索引：
 ```json
 DELETE /user
 ```
 
-## ES 客户端的安装
-代码: https://github.com/seznam/elasticlient
-官网: https://seznam.github.io/elasticlient/index.html
-ES C++ 的客户端选择并不多，我们这里使用 elasticlient 库，下面进行安装。
-```Shell
-# 克隆代码
-git clone https://github.com/seznam/elasticlient
-# 切换目录
-cd elasticlient
-# 更新子模块
-git submodule update --init --recursive
-# 编译代码
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/usr ..
-make
-# 安装
-make install
-```
-cmake 生成 makefile 的过程会遇到一个问题:
-（显示报错内容，大致为找不到 MicroHTTPD 相关路径  ）
-解决：需要安装 MicroHTTPD 库
-```Shell
-sudo apt-get install libmicrohttpd-dev
-```
-make 的时候编译出错，这是子模块 googletest 没有编译安装
 
-解决：手动安装子模块
-```Shell
-cd ../external/googletest/
-mkdir build && cd build
-cmake -DCMAKE_INSTALL_PREFIX=/usr ..
-make && sudo make install
-```
-安装好重新 cmake 即可。
-
-```Shell
-# 运行测试用例
-make test
-```
-
-至此，elasticlient 安装成功。
 
 
 ## ES 客户端接口介绍
+
+```
+vi /usr/include/elasticlient/client.h
+```
+
+
+
 ```cpp
+
 /**
- * Perform search on nodes until it is successsful. Throws exception if all nodes
- * has failed to respond.
- * \param indexName specification of an Elasticsearch index.
- * \param docType specification of an Elasticsearch document type.
- * \param body Elasticsearch request body.
- * \param routing Elasticsearch routing. If empty, no routing has been used.
+ * Initialize the Client.
+ * \param hostUrlList  Vector of URLs of Elasticsearch nodes in one Elasticsearch cluster.
+ *                     Each URL in vector should ends by "/".
+ * \param timeout      Elastic node connection timeout.
+ */
+explicit Client(const std::vector<std::string>& hostUrlList,
+                std::int32_t timeout = 6000);
+
+
+/**
+ * 在节点上执行搜索操作，直到搜索成功。若所有节点都未响应，则抛出异常。
+ * \param indexName Elasticsearch 索引的名称。
+ * \param docType Elasticsearch 文档类型的说明。
+ * \param body Elasticsearch 请求体。
+ * \param routing Elasticsearch 路由。若为空，则不使用路由。
  *
- * \return cpr::Response if any of node responds to request.
- * \throws ConnectionException if all hosts in cluster failed to respond.
+ * \return 若有任何节点响应请求，则返回 cpr::Response。
+ * \throws ConnectionException 若集群中所有主机都未响应，则抛出此异常。
  */
 cpr::Response search(const std::string &indexName,
                      const std::string &docType,
@@ -339,15 +480,14 @@ cpr::Response search(const std::string &indexName,
                      const std::string &routing = std::string());
 
 /**
- * Get document with specified id from cluster. Throws exception if all nodes
- * has failed to respond.
- * \param indexName specification of an Elasticsearch index.
- * \param docType specification of an Elasticsearch document type.
- * \param id Id of document which should be retrieved.
- * \param routing Elasticsearch routing. If empty, no routing has been used.
+ * 从集群中获取指定 ID 的文档。若所有节点都未响应，则抛出异常。
+ * \param indexName Elasticsearch 索引的名称。
+ * \param docType Elasticsearch 文档类型的说明。
+ * \param id 要获取的文档的 ID。
+ * \param routing Elasticsearch 路由。若为空，则不使用路由。
  *
- * \return cpr::Response if any of node responds to request.
- * \throws ConnectionException if all hosts in cluster failed to respond.
+ * \return 若有任何节点响应请求，则返回 cpr::Response。
+ * \throws ConnectionException 若集群中所有主机都未响应，则抛出此异常。
  */
 cpr::Response get(const std::string &indexName,
                   const std::string &docType,
@@ -355,16 +495,15 @@ cpr::Response get(const std::string &indexName,
                   const std::string &routing = std::string());
 
 /**
- * Index new document to cluster. Throws exception if all nodes has failed to respond.
- * \param indexName specification of an Elasticsearch index.
- * \param docType specification of an Elasticsearch document type.
- * \param body Elasticsearch request body.
- * \param id Id of document which should be indexed. If empty, id will be generated
- *           automatically by Elasticsearch cluster.
- * \param routing Elasticsearch routing. If empty, no routing has been used.
+ * 向集群中创建索引以及新增数据。若所有节点都未响应，则抛出异常。
+ * \param indexName Elasticsearch 索引的名称。
+ * \param docType Elasticsearch 文档类型的说明。
+ * \param body Elasticsearch 请求体。
+ * \param id 要索引的文档的 ID。若为空，ID 将由 Elasticsearch 集群自动生成。
+ * \param routing Elasticsearch 路由。若为空，则不使用路由。
  *
- * \return cpr::Response if any of node responds to request.
- * \throws ConnectionException if all hosts in cluster failed to respond.
+ * \return 若有任何节点响应请求，则返回 cpr::Response。
+ * \throws ConnectionException 若集群中所有主机都未响应，则抛出此异常。
  */
 cpr::Response index(const std::string &indexName,
                     const std::string &docType,
@@ -373,20 +512,61 @@ cpr::Response index(const std::string &indexName,
                     const std::string &routing = std::string());
 
 /**
- * Delete document with specified id from cluster. Throws exception if all nodes
- * has failed to respond.
- * \param indexName specification of an Elasticsearch index.
- * \param docType specification of an Elasticsearch document type.
- * \param id Id of document which should be deleted.
- * \param routing Elasticsearch routing. If empty, no routing has been used.
+ * 从集群中删除指定 ID 的文档。若所有节点都未响应，则抛出异常。
+ * \param indexName Elasticsearch 索引的名称。
+ * \param docType Elasticsearch 文档类型的说明。
+ * \param id 要删除的文档的 ID。
+ * \param routing Elasticsearch 路由。若为空，则不使用路由。
  *
- * \return cpr::Response if any of node responds to request.
- * \throws ConnectionException if all hosts in cluster failed to respond.
+ * \return 若有任何节点响应请求，则返回 cpr::Response。
+ * \throws ConnectionException 若集群中所有主机都未响应，则抛出此异常。
  */
 cpr::Response remove(const std::string &indexName,
                      const std::string &docType,
                      const std::string &id,
                      const std::string &routing = std::string());
+```
+```
+vi /usr/include/cpr/response.h
+```
+```cpp
+class Response {
+  private:
+    std::shared_ptr<CurlHolder> curl_{nullptr};
+
+  public:
+    // Ignored here since libcurl uses a long for this.
+    // NOLINTNEXTLINE(google-runtime-int)
+    long status_code{};
+    std::string text{};
+    Header header{};
+    Url url{};
+    double elapsed{};
+    Cookies cookies{};
+    Error error{};
+    std::string raw_header{};
+    std::string status_line{};
+    std::string reason{};
+    cpr_off_t uploaded_bytes{};
+    cpr_off_t downloaded_bytes{};
+    // Ignored here since libcurl uses a long for this.
+    // NOLINTNEXTLINE(google-runtime-int)
+    long redirect_count{};
+
+    Response() = default;
+    Response(std::shared_ptr<CurlHolder> curl, std::string&& p_text, std::string&& p_header_string,
+             Cookies&& p_cookies, Error&& p_error);
+    std::vector<std::string> GetCertInfo();
+    Response(const Response& other) = default;
+    Response(Response&& old) noexcept = default;
+    ~Response() noexcept = default;
+
+    Response& operator=(Response&& old) noexcept = default;
+    Response& operator=(const Response& other) = default;
+};
+} // namespace cpr
+
+#endif
 ```
 
 ## 入门案例
