@@ -233,6 +233,22 @@ namespace bite_im
         ESSearch(std::shared_ptr<elasticlient::Client> &client,
                  const std::string &name,
                  const std::string &type = "_doc") : _name(name), _type(type), _client(client) {}
+
+        // 必须排除的条件，满足这些条件的文档将不会被返回
+        // "must_not": [
+        //     {
+        //         // terms 查询，用于匹配字段值是否在指定数组中
+        //         "terms": {
+        //             // 指定要匹配的字段为 user_id 的 keyword 类型
+        //             "user_id.keyword": [
+        //                 // 排除 user_id 为以下值的文档
+        //                 "USER4b862aaa-2df8654a-7ebb4b65-e3507f66",
+        //                 "USER14eeea5-442771b9-0262e455-e4663d1d",
+        //                 "USER484a6734-03a124f0-996c169d-d05c1869"
+        //             ]
+        //         }
+        //     }
+        // ],
         ESSearch &append_must_not_terms(const std::string &key, const std::vector<std::string> &vals)
         {
             Json::Value fields;
@@ -246,6 +262,28 @@ namespace bite_im
             return *this;
         }
 
+        // 可选条件，满足任意一个条件的文档都会被返回
+        // "should": [
+        //     {
+        //         // match 查询，用于对指定字段进行全文匹配
+        //         "match": {
+        //             // 对 user_id 字段进行全文匹配，查找包含 "昵称" 的文档
+        //             "user_id": "昵称"
+        //         }
+        //     },
+        //     {
+        //         "match": {
+        //             // 对 nickname 字段进行全文匹配，查找包含 "昵称" 的文档
+        //             "nickname": "昵称"
+        //         }
+        //     },
+        //     {
+        //         "match": {
+        //             // 对 phone 字段进行全文匹配，查找包含 "昵称" 的文档
+        //             "phone": "昵称"
+        //         }
+        //     }
+        // ]
         ESSearch &append_should_match(const std::string &key, const std::string &val)
         {
             Json::Value field;
