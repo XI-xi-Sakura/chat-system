@@ -202,7 +202,7 @@ $ ls
 person-odb.cxx  person-odb.hxx  person-odb.ixx  person.hxx  person.sql
 ```
 
-编写主函数代码：test.cc
+编写主函数代码：`test.cc`
 
 ```cpp
 #include <string>
@@ -271,3 +271,359 @@ $ ./test
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 ```
 
+## ODB类型映射：
+
+| C++ Type             | MySQL Type        | Default NULL Semantics |
+|----------------------|-------------------|------------------------|
+| bool                 | TINYINT(1)        | NOT NULL               |
+| char                 | CHAR(1)           | NOT NULL               |
+| signed char          | TINYINT           | NOT NULL               |
+| unsigned char        | TINYINT UNSIGNED  | NOT NULL               |
+| short                | SMALLINT          | NOT NULL               |
+| unsigned short       | SMALLINT UNSIGNED | NOT NULL               |
+| int                  | INT               | NOT NULL               |
+| unsigned int         | INT UNSIGNED      | NOT NULL               |
+| long                 | BIGINT            | NOT NULL               |
+| unsigned long        | BIGINT UNSIGNED   | NOT NULL               |
+| long long            | BIGINT            | NOT NULL               |
+| unsigned long long   | BIGINT UNSIGNED   | NOT NULL               |
+| float                | FLOAT             | NOT NULL               |
+| double               | DOUBLE            | NOT NULL               |
+| std::string          | TEXT/VARCHAR(255) | NOT NULL               |
+| char[N]              | VARCHAR(N-1)      | NOT NULL               |
+
+| Boost date_time Type       | MySQL Type | Default NULL Semantics |
+|----------------------------|------------|------------------------|
+| gregorian::date            | DATE       | NULL                   |
+| posix_time::ptime          | DATETIME   | NULL                   |
+| posix_time::time_duration  | TIME       | NULL                   |
+
+## ODB编程：
+ODB（Open Database）在数据元结构定义时，使用预处理器指令（`#pragma`）来提供元数据，这些元数据指示如何将 C++ 类型映射到数据库模式。这些`#pragma`指令是在 C++ 代码中使用的，它们不是 C++ 语言的一部分，而是特定于 ODB 编译器的扩展。  
+以下是 ODB 中常用的一些`#pragma`指令：  
+
+1. `#pragma db object`:  
+    - 用于声明一个类是数据库对象，即这个类将映射到数据库中的一个表。  
+
+2. `#pragma db table("table_name")`:  
+    - 指定类映射到数据库中的表名。如果不指定，则默认使用类名。  
+
+3. `#pragma db id`:  
+    - 标记类中的一个成员变量作为数据库表的主键。  
+
+4. `#pragma db column("column_name")`:  
+    - 指定类成员映射到数据库表中的列名。如果不指定，则默认使用成员变量的名字。  
+
+5. `#pragma db view`:  
+    - 用于声明一个类是一个数据库视图，而不是一个表。  
+
+6. `#pragma db session`:  
+    - 用于声明一个全局或成员变量是数据库会话。  
+
+7. `#pragma db query("query")`:  
+    - 用于定义自定义的查询函数。  
+
+8. `#pragma db index("index_name")`:  
+    - 指定成员变量应该被索引。  
+
+9. `#pragma db default("default_value")`:  
+    - 指定成员变量的默认值。  
+
+10. `#pragma db unique`:  
+    - 指定成员变量或一组变量应该具有唯一性约束。  
+
+11. `#pragma db not_null`:  
+    - 指定成员变量不允许为空。  
+
+12. `#pragma db auto`:  
+    - 指定成员变量的值在插入时自动生成（例如，自动递增的主键）。  
+
+13. `#pragma db transient`:  
+    - 指定成员变量不应该被持久化到数据库中。  
+
+14. `#pragma db type("type_name")`:  
+    - 指定成员变量的数据库类型。  
+
+15. `#pragma db convert("converter")`:  
+    - 指定用于成员变量的自定义类型转换器。  
+
+16. `#pragma db pool("pool_name")`:  
+    - 指定用于数据库连接的连接池。  
+
+17. `#pragma db trigger("trigger_name")`:  
+    - 指定在插入、更新或删除操作时触发的触发器。  
+
+
+```cpp
+namespace odb {
+    namespace mysql {
+        // mysql 连接池对象类
+        class LIBODB_MYSQL_EXPORT new_connection_factory :
+            public connection_pool_factory {
+            connection_pool_factory(
+                std::size_t max_connections = 0,
+                std::size_t min_connections = 0,
+                bool ping = true)
+            };
+        }
+        // 操作句柄类
+        class LIBODB_EXPORT database {
+            // 新增数据
+            void persist (T& object);
+            // 更新数据
+            void update (T& object);
+            void erase (T& object);
+            unsigned long long erase_query (const std::string&);
+            unsigned long long erase_query (const odb::query<T>&);
+            result<T> query (const std::string&);
+            result<T> query (const odb::query<T>&, bool cache = true);
+            odb::query<T> result<T>::pointer_type query_one(const odb::query<T>&);
+            virtual transaction_impl* begin () = 0;
+        };
+        // 事务操作类
+        class LIBODB_EXPORT transaction {
+            transaction (transaction_impl*, bool make_current = true);
+            void commit ();
+            void rollback ();
+        };
+        // 针对可能为空的字段封装的类似于智能指针的类型
+        template <typename T>
+        class nullable {
+            typedef T value_type;
+            T& get ();
+            const T& get () const;
+            T* operator-> ();
+            const T* operator-> () const;
+            T& operator* ();
+            const T& operator* () const;
+        };
+        // 针对查询结果所封装的容器类
+        template <typename T>
+        class result : result_base<T, class_traits<T>::kind> {
+            result ()
+            result (const result& r)
+            iterator begin ()
+            iterator end ()
+            size_type size ()
+            bool empty ()
+        };
+        // 针对查询封装的条件类
+        class LIBODB_EXPORT query_base {
+            explicit query_base (const std::string& native)
+            const clause_type& clause () const
+        };
+        namespace mysql {
+            template <typename T>
+            class query : public query_base,
+                public query_selector<T>, id_mysql::columns_type {
+                query (const std::string& q)
+                query (const query_base& q)
+                query (bool v)
+            };
+            template <typename T>
+            class query<T, mysql::query_base> : public mysql::query<T> {
+                query (bool v)
+                query (const mysql::query_base& q)
+                query (const std::string& q)
+            };
+        }
+    }
+}
+```
+
+## 使用样例
+在 odb 的使用中，我们最关注的其实是三个点，
+- 一个是增删改的基础操作
+- 一个是基于原生 sql 语句的查询，
+- 一个是基于多表连接的复杂查找，
+能解决这三个问题，就能满足数据库的基本功能操作。
+
+```cpp
+#include <odb/database.hxx>
+#include <odb/mysql/database.hxx>
+#include <gflags/gflags.h>
+
+#include "person.hxx"
+#include "person-odb.hxx"
+
+DEFINE_int32(mysql_port, 0, "mysql 服务器端口");
+DEFINE_string(mysql_host, "127.0.0.1", "mysql 服务器地址");
+DEFINE_string(mysql_db, "bite_im", "mysql 默认连接库名称");
+DEFINE_string(mysql_user, "root", "mysql 默认连接用户名");
+DEFINE_string(mysql_passwd, "bite_666", "mysql 默认连接密码");
+DEFINE_int32(mysql_conn_pool, 3, "mysql 连接池中连接最大数量");
+
+class MysqlClient
+{
+public:
+    static std::shared_ptr<odb::database> create(
+        const std::string& user,
+        const std::string& passwd,
+        const std::string& db_name,
+        const std::string& host,
+        int port,
+        size_t conn_pool_count) {
+        // 初始化连接池
+        std::unique_ptr<odb::mysql::connection_factory> pool(
+            new odb::mysql::connection_pool_factory(conn_pool_count));
+        // 构造 mysql 操作句柄
+        std::shared_ptr<odb::database> db(new odb::mysql::database(
+            user.c_str(), passwd.c_str(), db_name.c_str(),
+            host.c_str(), port, 0, "utf8", 0, std::move(pool)));
+        return db;
+    }
+    // 开始事务，并返回事务对象
+    static std::shared_ptr<odb::transaction> transaction(const std::shared_ptr<odb::database>& db) {
+        return std::make_shared<odb::transaction>(db->begin());
+    }
+    // 通过事务对象提交事务
+    static void commit(const std::shared_ptr<odb::transaction>& t) {
+        return t->commit();
+    }
+    // 通过事务对象回滚事务
+    static void rollback(const std::shared_ptr<odb::transaction>& t) {
+        return t->rollback();
+    }
+};
+
+class StudentDao {
+public:
+    StudentDao(const std::string& user,
+               const std::string& passwd,
+               const std::string& db_name,
+               const std::string& host,
+               int port,
+               size_t conn_pool_count) :_db(MysqlClient::create(
+        user, passwd, db_name, host, port, conn_pool_count))
+    {}
+    void append(Student& stu) {
+        try{
+            auto t = MysqlClient::transaction(_db);
+            _db->persist(stu);
+            MysqlClient::commit(t);
+        } catch(std::exception &e) {
+            std::cout << e.what() << std::endl;
+        }
+    }
+    void update(const Student& stu) {
+        try{
+            auto t = MysqlClient::transaction(_db);
+            _db->update(stu);
+            MysqlClient::commit(t);
+        } catch(std::exception &e) {
+            std::cout << e.what() << std::endl;
+        }
+    }
+    void remove(const std::string &name) {
+        try{
+            auto t = MysqlClient::transaction(_db);
+            typedef odb::query<Student> query;
+            _db->erase(query<Student>(query::name == name));
+            MysqlClient::commit(t);
+        } catch(std::exception &e) {
+            std::cout << e.what() << std::endl;
+        }
+    }
+    std::vector<std::string> select(int n) {
+        std::vector<std::string> res;
+        try{
+            auto t = MysqlClient::transaction(_db);
+            typedef odb::query<all_name> query;
+            typedef odb::result<all_name> result;
+            std::string cond = "order by age desc limit ";
+            cond += std::to_string(n);
+            result r(_db->query<all_name>(cond));
+            for (auto i(r.begin()); i != r.end(); ++i) {
+                res.push_back(i->name);
+            }
+            MysqlClient::commit(t);
+        } catch(std::exception &e) {
+            std::cout << e.what() << std::endl;
+        }
+        return res;
+    }
+private:
+    std::shared_ptr<odb::database> _db;
+};
+
+class ClassesDao {
+public:
+    ClassesDao(const std::string& user,
+               const std::string& passwd,
+               const std::string& db_name,
+               const std::string& host,
+               int port,
+               size_t conn_pool_count) :_db(MysqlClient::create(
+        user, passwd, db_name, host, port, conn_pool_count))
+    {}
+    void append(const std::string &id, const std::string &desc) {
+        Classes c(id, desc);
+        try{
+            auto t = MysqlClient::transaction(_db);
+            _db->persist(c);
+            MysqlClient::commit(t);
+        } catch(std::exception &e) {
+            std::cout << e.what() << std::endl;
+        }
+    }
+    std::vector<class_student> select(const std::string &id) {
+        std::vector<class_student> res;
+        try{
+            auto t = MysqlClient::transaction(_db);
+            typedef odb::query<class_student> query;
+            typedef odb::result<class_student> result;
+            std::string cond = "class_students.class_id=" + id;
+            result r(_db->query<class_student>(cond));
+            for (auto i(r.begin()); i != r.end(); ++i) {
+                res.push_back(*i);
+            }
+            MysqlClient::commit(t);
+        } catch(std::exception &e) {
+            std::cout << e.what() << std::endl;
+        }
+        return res;
+    }
+private:
+    std::shared_ptr<odb::database> _db;
+};
+
+int main(int argc, char *argv[])
+{
+    // ptime p = boost::posix_time::time_from_string("2017-05-22 09:09:39");
+    // Student stu1("张三", 14, p, "11111");
+    // Student stu2("李四", 15, p, "11111");
+    // Student stu3("王五", 12, p, "11111");
+    // Student stu4("赵六", 13, p, "22222");
+    // Student stu5("刘七", 14, p, "22222");
+
+    // StudentDao student_tb(FLAGS_mysql_user, FLAGS_mysql_passwd,
+    //                       FLAGS_mysql_db, FLAGS_mysql_host,
+    //                       FLAGS_mysql_port, FLAGS_mysql_conn_pool);
+    // student_tb.append(stu1);
+    // student_tb.append(stu2);
+    // student_tb.append(stu3);
+    // student_tb.append(stu4);
+    // student_tb.append(stu5);
+    // stu4.age(16);
+    // student_tb.update(stu4);
+    // auto res = student_tb.select(3);
+    // for (auto r : res) {
+    //     std::cout << r << std::endl;
+    // }
+    ClassesDao classes_tb(FLAGS_mysql_user, FLAGS_mysql_passwd,
+                          FLAGS_mysql_db, FLAGS_mysql_host,
+                          FLAGS_mysql_port, FLAGS_mysql_conn_pool);
+    classes_tb.append("11111", "一年级一班");
+    classes_tb.append("22222", "一年级二班");
+    auto res = classes_tb.select("11111");
+    for (auto r : res) {
+        std::cout << r.stu << "\t" << r.classes << std::endl;
+    }
+    return 0;
+}
+```
+
+### 官网链接
+- https://codesynthesis.com/products/odb/doc/manual.xhtml 
+- https://codesynthesis.com/products/odb/ 
+- https://codesynthesis.com/products/odb/doc/install-build2.xhtml  
