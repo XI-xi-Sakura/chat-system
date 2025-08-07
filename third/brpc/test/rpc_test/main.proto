@@ -1,0 +1,33 @@
+// 指定使用 Protocol Buffers 版本 3 的语法
+syntax="proto3";
+
+// 定义协议的包名，用于避免命名冲突
+package example;
+
+// 开启 C++ 通用服务支持，这样可以使用通用的服务接口框架
+option cc_generic_services = true;
+
+// 定义 Echo 方法请求参数结构
+// 该消息类型包含一个字符串字段，用于传递需要回声的消息
+message EchoRequest {
+    // 要进行回声处理的消息内容
+    string message = 1;
+};
+
+// 定义 Echo 方法响应参数结构
+// 该消息类型包含一个字符串字段，用于返回回声后的消息
+message EchoResponse {
+    // 回声处理后的消息内容
+    string message = 1;
+};
+
+// 定义 RPC 远端方法
+// 此服务提供了一个名为 Echo 的远程过程调用方法
+service EchoService {
+    // 定义 Echo 方法，接收一个 EchoRequest 类型的请求
+    // 并返回一个 EchoResponse 类型的响应
+    rpc Echo(EchoRequest) returns (EchoResponse);
+};
+
+// 运行命令
+// protoc --cpp_out=./ main.proto

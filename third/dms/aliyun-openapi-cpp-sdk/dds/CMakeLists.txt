@@ -1,0 +1,558 @@
+#
+# Copyright 2009-2017 Alibaba Cloud All rights reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+set(public_header_dir ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+
+set(dds_public_header 
+	include/alibabacloud/dds/DdsClient.h
+	include/alibabacloud/dds/DdsExport.h )
+
+set(dds_public_header_model 
+	include/alibabacloud/dds/model/AllocateNodePrivateNetworkAddressRequest.h
+	include/alibabacloud/dds/model/AllocateNodePrivateNetworkAddressResult.h
+	include/alibabacloud/dds/model/AllocatePublicNetworkAddressRequest.h
+	include/alibabacloud/dds/model/AllocatePublicNetworkAddressResult.h
+	include/alibabacloud/dds/model/CheckCloudResourceAuthorizedRequest.h
+	include/alibabacloud/dds/model/CheckCloudResourceAuthorizedResult.h
+	include/alibabacloud/dds/model/CheckRecoveryConditionRequest.h
+	include/alibabacloud/dds/model/CheckRecoveryConditionResult.h
+	include/alibabacloud/dds/model/CheckServiceLinkedRoleRequest.h
+	include/alibabacloud/dds/model/CheckServiceLinkedRoleResult.h
+	include/alibabacloud/dds/model/CreateAccountRequest.h
+	include/alibabacloud/dds/model/CreateAccountResult.h
+	include/alibabacloud/dds/model/CreateBackupRequest.h
+	include/alibabacloud/dds/model/CreateBackupResult.h
+	include/alibabacloud/dds/model/CreateDBInstanceRequest.h
+	include/alibabacloud/dds/model/CreateDBInstanceResult.h
+	include/alibabacloud/dds/model/CreateGlobalSecurityIPGroupRequest.h
+	include/alibabacloud/dds/model/CreateGlobalSecurityIPGroupResult.h
+	include/alibabacloud/dds/model/CreateNodeRequest.h
+	include/alibabacloud/dds/model/CreateNodeResult.h
+	include/alibabacloud/dds/model/CreateNodeBatchRequest.h
+	include/alibabacloud/dds/model/CreateNodeBatchResult.h
+	include/alibabacloud/dds/model/CreateShardingDBInstanceRequest.h
+	include/alibabacloud/dds/model/CreateShardingDBInstanceResult.h
+	include/alibabacloud/dds/model/DeleteDBInstanceRequest.h
+	include/alibabacloud/dds/model/DeleteDBInstanceResult.h
+	include/alibabacloud/dds/model/DeleteGlobalSecurityIPGroupRequest.h
+	include/alibabacloud/dds/model/DeleteGlobalSecurityIPGroupResult.h
+	include/alibabacloud/dds/model/DeleteNodeRequest.h
+	include/alibabacloud/dds/model/DeleteNodeResult.h
+	include/alibabacloud/dds/model/DescribeAccountsRequest.h
+	include/alibabacloud/dds/model/DescribeAccountsResult.h
+	include/alibabacloud/dds/model/DescribeActiveOperationMaintenanceConfigRequest.h
+	include/alibabacloud/dds/model/DescribeActiveOperationMaintenanceConfigResult.h
+	include/alibabacloud/dds/model/DescribeActiveOperationTaskRequest.h
+	include/alibabacloud/dds/model/DescribeActiveOperationTaskResult.h
+	include/alibabacloud/dds/model/DescribeActiveOperationTaskCountRequest.h
+	include/alibabacloud/dds/model/DescribeActiveOperationTaskCountResult.h
+	include/alibabacloud/dds/model/DescribeActiveOperationTaskRegionRequest.h
+	include/alibabacloud/dds/model/DescribeActiveOperationTaskRegionResult.h
+	include/alibabacloud/dds/model/DescribeActiveOperationTaskTypeRequest.h
+	include/alibabacloud/dds/model/DescribeActiveOperationTaskTypeResult.h
+	include/alibabacloud/dds/model/DescribeActiveOperationTasksRequest.h
+	include/alibabacloud/dds/model/DescribeActiveOperationTasksResult.h
+	include/alibabacloud/dds/model/DescribeAuditLogFilterRequest.h
+	include/alibabacloud/dds/model/DescribeAuditLogFilterResult.h
+	include/alibabacloud/dds/model/DescribeAuditPolicyRequest.h
+	include/alibabacloud/dds/model/DescribeAuditPolicyResult.h
+	include/alibabacloud/dds/model/DescribeAuditRecordsRequest.h
+	include/alibabacloud/dds/model/DescribeAuditRecordsResult.h
+	include/alibabacloud/dds/model/DescribeAvailabilityZonesRequest.h
+	include/alibabacloud/dds/model/DescribeAvailabilityZonesResult.h
+	include/alibabacloud/dds/model/DescribeAvailableEngineVersionRequest.h
+	include/alibabacloud/dds/model/DescribeAvailableEngineVersionResult.h
+	include/alibabacloud/dds/model/DescribeAvailableResourceRequest.h
+	include/alibabacloud/dds/model/DescribeAvailableResourceResult.h
+	include/alibabacloud/dds/model/DescribeBackupDBsRequest.h
+	include/alibabacloud/dds/model/DescribeBackupDBsResult.h
+	include/alibabacloud/dds/model/DescribeBackupPolicyRequest.h
+	include/alibabacloud/dds/model/DescribeBackupPolicyResult.h
+	include/alibabacloud/dds/model/DescribeBackupStorageRequest.h
+	include/alibabacloud/dds/model/DescribeBackupStorageResult.h
+	include/alibabacloud/dds/model/DescribeBackupTasksRequest.h
+	include/alibabacloud/dds/model/DescribeBackupTasksResult.h
+	include/alibabacloud/dds/model/DescribeBackupsRequest.h
+	include/alibabacloud/dds/model/DescribeBackupsResult.h
+	include/alibabacloud/dds/model/DescribeClusterBackupsRequest.h
+	include/alibabacloud/dds/model/DescribeClusterBackupsResult.h
+	include/alibabacloud/dds/model/DescribeClusterRecoverTimeRequest.h
+	include/alibabacloud/dds/model/DescribeClusterRecoverTimeResult.h
+	include/alibabacloud/dds/model/DescribeDBInstanceAttributeRequest.h
+	include/alibabacloud/dds/model/DescribeDBInstanceAttributeResult.h
+	include/alibabacloud/dds/model/DescribeDBInstanceEncryptionKeyRequest.h
+	include/alibabacloud/dds/model/DescribeDBInstanceEncryptionKeyResult.h
+	include/alibabacloud/dds/model/DescribeDBInstanceMonitorRequest.h
+	include/alibabacloud/dds/model/DescribeDBInstanceMonitorResult.h
+	include/alibabacloud/dds/model/DescribeDBInstancePerformanceRequest.h
+	include/alibabacloud/dds/model/DescribeDBInstancePerformanceResult.h
+	include/alibabacloud/dds/model/DescribeDBInstanceSSLRequest.h
+	include/alibabacloud/dds/model/DescribeDBInstanceSSLResult.h
+	include/alibabacloud/dds/model/DescribeDBInstanceSpecInfoRequest.h
+	include/alibabacloud/dds/model/DescribeDBInstanceSpecInfoResult.h
+	include/alibabacloud/dds/model/DescribeDBInstanceSwitchLogRequest.h
+	include/alibabacloud/dds/model/DescribeDBInstanceSwitchLogResult.h
+	include/alibabacloud/dds/model/DescribeDBInstanceTDEInfoRequest.h
+	include/alibabacloud/dds/model/DescribeDBInstanceTDEInfoResult.h
+	include/alibabacloud/dds/model/DescribeDBInstancesRequest.h
+	include/alibabacloud/dds/model/DescribeDBInstancesResult.h
+	include/alibabacloud/dds/model/DescribeDBInstancesOverviewRequest.h
+	include/alibabacloud/dds/model/DescribeDBInstancesOverviewResult.h
+	include/alibabacloud/dds/model/DescribeErrorLogRecordsRequest.h
+	include/alibabacloud/dds/model/DescribeErrorLogRecordsResult.h
+	include/alibabacloud/dds/model/DescribeGlobalSecurityIPGroupRequest.h
+	include/alibabacloud/dds/model/DescribeGlobalSecurityIPGroupResult.h
+	include/alibabacloud/dds/model/DescribeGlobalSecurityIPGroupRelationRequest.h
+	include/alibabacloud/dds/model/DescribeGlobalSecurityIPGroupRelationResult.h
+	include/alibabacloud/dds/model/DescribeHistoryTasksRequest.h
+	include/alibabacloud/dds/model/DescribeHistoryTasksResult.h
+	include/alibabacloud/dds/model/DescribeHistoryTasksStatRequest.h
+	include/alibabacloud/dds/model/DescribeHistoryTasksStatResult.h
+	include/alibabacloud/dds/model/DescribeInstanceAutoRenewalAttributeRequest.h
+	include/alibabacloud/dds/model/DescribeInstanceAutoRenewalAttributeResult.h
+	include/alibabacloud/dds/model/DescribeInstanceRecoverTimeRequest.h
+	include/alibabacloud/dds/model/DescribeInstanceRecoverTimeResult.h
+	include/alibabacloud/dds/model/DescribeKernelReleaseNotesRequest.h
+	include/alibabacloud/dds/model/DescribeKernelReleaseNotesResult.h
+	include/alibabacloud/dds/model/DescribeKmsKeysRequest.h
+	include/alibabacloud/dds/model/DescribeKmsKeysResult.h
+	include/alibabacloud/dds/model/DescribeMongoDBLogConfigRequest.h
+	include/alibabacloud/dds/model/DescribeMongoDBLogConfigResult.h
+	include/alibabacloud/dds/model/DescribeParameterModificationHistoryRequest.h
+	include/alibabacloud/dds/model/DescribeParameterModificationHistoryResult.h
+	include/alibabacloud/dds/model/DescribeParameterTemplatesRequest.h
+	include/alibabacloud/dds/model/DescribeParameterTemplatesResult.h
+	include/alibabacloud/dds/model/DescribeParametersRequest.h
+	include/alibabacloud/dds/model/DescribeParametersResult.h
+	include/alibabacloud/dds/model/DescribePriceRequest.h
+	include/alibabacloud/dds/model/DescribePriceResult.h
+	include/alibabacloud/dds/model/DescribeRegionsRequest.h
+	include/alibabacloud/dds/model/DescribeRegionsResult.h
+	include/alibabacloud/dds/model/DescribeRenewalPriceRequest.h
+	include/alibabacloud/dds/model/DescribeRenewalPriceResult.h
+	include/alibabacloud/dds/model/DescribeReplicaSetRoleRequest.h
+	include/alibabacloud/dds/model/DescribeReplicaSetRoleResult.h
+	include/alibabacloud/dds/model/DescribeRestoreDBInstanceListRequest.h
+	include/alibabacloud/dds/model/DescribeRestoreDBInstanceListResult.h
+	include/alibabacloud/dds/model/DescribeRoleZoneInfoRequest.h
+	include/alibabacloud/dds/model/DescribeRoleZoneInfoResult.h
+	include/alibabacloud/dds/model/DescribeRunningLogRecordsRequest.h
+	include/alibabacloud/dds/model/DescribeRunningLogRecordsResult.h
+	include/alibabacloud/dds/model/DescribeSecurityGroupConfigurationRequest.h
+	include/alibabacloud/dds/model/DescribeSecurityGroupConfigurationResult.h
+	include/alibabacloud/dds/model/DescribeSecurityIpsRequest.h
+	include/alibabacloud/dds/model/DescribeSecurityIpsResult.h
+	include/alibabacloud/dds/model/DescribeShardingNetworkAddressRequest.h
+	include/alibabacloud/dds/model/DescribeShardingNetworkAddressResult.h
+	include/alibabacloud/dds/model/DescribeSlowLogRecordsRequest.h
+	include/alibabacloud/dds/model/DescribeSlowLogRecordsResult.h
+	include/alibabacloud/dds/model/DescribeTagsRequest.h
+	include/alibabacloud/dds/model/DescribeTagsResult.h
+	include/alibabacloud/dds/model/DescribeUserEncryptionKeyListRequest.h
+	include/alibabacloud/dds/model/DescribeUserEncryptionKeyListResult.h
+	include/alibabacloud/dds/model/DestroyInstanceRequest.h
+	include/alibabacloud/dds/model/DestroyInstanceResult.h
+	include/alibabacloud/dds/model/EvaluateResourceRequest.h
+	include/alibabacloud/dds/model/EvaluateResourceResult.h
+	include/alibabacloud/dds/model/ListTagResourcesRequest.h
+	include/alibabacloud/dds/model/ListTagResourcesResult.h
+	include/alibabacloud/dds/model/MigrateAvailableZoneRequest.h
+	include/alibabacloud/dds/model/MigrateAvailableZoneResult.h
+	include/alibabacloud/dds/model/MigrateToOtherZoneRequest.h
+	include/alibabacloud/dds/model/MigrateToOtherZoneResult.h
+	include/alibabacloud/dds/model/ModifyAccountDescriptionRequest.h
+	include/alibabacloud/dds/model/ModifyAccountDescriptionResult.h
+	include/alibabacloud/dds/model/ModifyActiveOperationTasksRequest.h
+	include/alibabacloud/dds/model/ModifyActiveOperationTasksResult.h
+	include/alibabacloud/dds/model/ModifyAuditLogFilterRequest.h
+	include/alibabacloud/dds/model/ModifyAuditLogFilterResult.h
+	include/alibabacloud/dds/model/ModifyAuditPolicyRequest.h
+	include/alibabacloud/dds/model/ModifyAuditPolicyResult.h
+	include/alibabacloud/dds/model/ModifyBackupPolicyRequest.h
+	include/alibabacloud/dds/model/ModifyBackupPolicyResult.h
+	include/alibabacloud/dds/model/ModifyDBInstanceAttributeRequest.h
+	include/alibabacloud/dds/model/ModifyDBInstanceAttributeResult.h
+	include/alibabacloud/dds/model/ModifyDBInstanceConfigRequest.h
+	include/alibabacloud/dds/model/ModifyDBInstanceConfigResult.h
+	include/alibabacloud/dds/model/ModifyDBInstanceConnectionStringRequest.h
+	include/alibabacloud/dds/model/ModifyDBInstanceConnectionStringResult.h
+	include/alibabacloud/dds/model/ModifyDBInstanceDescriptionRequest.h
+	include/alibabacloud/dds/model/ModifyDBInstanceDescriptionResult.h
+	include/alibabacloud/dds/model/ModifyDBInstanceDiskTypeRequest.h
+	include/alibabacloud/dds/model/ModifyDBInstanceDiskTypeResult.h
+	include/alibabacloud/dds/model/ModifyDBInstanceMaintainTimeRequest.h
+	include/alibabacloud/dds/model/ModifyDBInstanceMaintainTimeResult.h
+	include/alibabacloud/dds/model/ModifyDBInstanceMonitorRequest.h
+	include/alibabacloud/dds/model/ModifyDBInstanceMonitorResult.h
+	include/alibabacloud/dds/model/ModifyDBInstanceNetExpireTimeRequest.h
+	include/alibabacloud/dds/model/ModifyDBInstanceNetExpireTimeResult.h
+	include/alibabacloud/dds/model/ModifyDBInstanceNetworkTypeRequest.h
+	include/alibabacloud/dds/model/ModifyDBInstanceNetworkTypeResult.h
+	include/alibabacloud/dds/model/ModifyDBInstanceSSLRequest.h
+	include/alibabacloud/dds/model/ModifyDBInstanceSSLResult.h
+	include/alibabacloud/dds/model/ModifyDBInstanceSpecRequest.h
+	include/alibabacloud/dds/model/ModifyDBInstanceSpecResult.h
+	include/alibabacloud/dds/model/ModifyDBInstanceTDERequest.h
+	include/alibabacloud/dds/model/ModifyDBInstanceTDEResult.h
+	include/alibabacloud/dds/model/ModifyGlobalSecurityIPGroupRequest.h
+	include/alibabacloud/dds/model/ModifyGlobalSecurityIPGroupResult.h
+	include/alibabacloud/dds/model/ModifyGlobalSecurityIPGroupNameRequest.h
+	include/alibabacloud/dds/model/ModifyGlobalSecurityIPGroupNameResult.h
+	include/alibabacloud/dds/model/ModifyGlobalSecurityIPGroupRelationRequest.h
+	include/alibabacloud/dds/model/ModifyGlobalSecurityIPGroupRelationResult.h
+	include/alibabacloud/dds/model/ModifyInstanceAutoRenewalAttributeRequest.h
+	include/alibabacloud/dds/model/ModifyInstanceAutoRenewalAttributeResult.h
+	include/alibabacloud/dds/model/ModifyInstanceVpcAuthModeRequest.h
+	include/alibabacloud/dds/model/ModifyInstanceVpcAuthModeResult.h
+	include/alibabacloud/dds/model/ModifyNodeSpecRequest.h
+	include/alibabacloud/dds/model/ModifyNodeSpecResult.h
+	include/alibabacloud/dds/model/ModifyNodeSpecBatchRequest.h
+	include/alibabacloud/dds/model/ModifyNodeSpecBatchResult.h
+	include/alibabacloud/dds/model/ModifyParametersRequest.h
+	include/alibabacloud/dds/model/ModifyParametersResult.h
+	include/alibabacloud/dds/model/ModifyResourceGroupRequest.h
+	include/alibabacloud/dds/model/ModifyResourceGroupResult.h
+	include/alibabacloud/dds/model/ModifySecurityGroupConfigurationRequest.h
+	include/alibabacloud/dds/model/ModifySecurityGroupConfigurationResult.h
+	include/alibabacloud/dds/model/ModifySecurityIpsRequest.h
+	include/alibabacloud/dds/model/ModifySecurityIpsResult.h
+	include/alibabacloud/dds/model/ModifyTaskInfoRequest.h
+	include/alibabacloud/dds/model/ModifyTaskInfoResult.h
+	include/alibabacloud/dds/model/ReleaseNodePrivateNetworkAddressRequest.h
+	include/alibabacloud/dds/model/ReleaseNodePrivateNetworkAddressResult.h
+	include/alibabacloud/dds/model/ReleasePublicNetworkAddressRequest.h
+	include/alibabacloud/dds/model/ReleasePublicNetworkAddressResult.h
+	include/alibabacloud/dds/model/RenewDBInstanceRequest.h
+	include/alibabacloud/dds/model/RenewDBInstanceResult.h
+	include/alibabacloud/dds/model/ResetAccountPasswordRequest.h
+	include/alibabacloud/dds/model/ResetAccountPasswordResult.h
+	include/alibabacloud/dds/model/RestartDBInstanceRequest.h
+	include/alibabacloud/dds/model/RestartDBInstanceResult.h
+	include/alibabacloud/dds/model/RestartNodeRequest.h
+	include/alibabacloud/dds/model/RestartNodeResult.h
+	include/alibabacloud/dds/model/SwitchDBInstanceHARequest.h
+	include/alibabacloud/dds/model/SwitchDBInstanceHAResult.h
+	include/alibabacloud/dds/model/TagResourcesRequest.h
+	include/alibabacloud/dds/model/TagResourcesResult.h
+	include/alibabacloud/dds/model/TransferClusterBackupRequest.h
+	include/alibabacloud/dds/model/TransferClusterBackupResult.h
+	include/alibabacloud/dds/model/TransformInstanceChargeTypeRequest.h
+	include/alibabacloud/dds/model/TransformInstanceChargeTypeResult.h
+	include/alibabacloud/dds/model/TransformToPrePaidRequest.h
+	include/alibabacloud/dds/model/TransformToPrePaidResult.h
+	include/alibabacloud/dds/model/UntagResourcesRequest.h
+	include/alibabacloud/dds/model/UntagResourcesResult.h
+	include/alibabacloud/dds/model/UpgradeDBInstanceEngineVersionRequest.h
+	include/alibabacloud/dds/model/UpgradeDBInstanceEngineVersionResult.h
+	include/alibabacloud/dds/model/UpgradeDBInstanceKernelVersionRequest.h
+	include/alibabacloud/dds/model/UpgradeDBInstanceKernelVersionResult.h )
+
+set(dds_src 
+	src/DdsClient.cc
+	src/model/AllocateNodePrivateNetworkAddressRequest.cc
+	src/model/AllocateNodePrivateNetworkAddressResult.cc
+	src/model/AllocatePublicNetworkAddressRequest.cc
+	src/model/AllocatePublicNetworkAddressResult.cc
+	src/model/CheckCloudResourceAuthorizedRequest.cc
+	src/model/CheckCloudResourceAuthorizedResult.cc
+	src/model/CheckRecoveryConditionRequest.cc
+	src/model/CheckRecoveryConditionResult.cc
+	src/model/CheckServiceLinkedRoleRequest.cc
+	src/model/CheckServiceLinkedRoleResult.cc
+	src/model/CreateAccountRequest.cc
+	src/model/CreateAccountResult.cc
+	src/model/CreateBackupRequest.cc
+	src/model/CreateBackupResult.cc
+	src/model/CreateDBInstanceRequest.cc
+	src/model/CreateDBInstanceResult.cc
+	src/model/CreateGlobalSecurityIPGroupRequest.cc
+	src/model/CreateGlobalSecurityIPGroupResult.cc
+	src/model/CreateNodeRequest.cc
+	src/model/CreateNodeResult.cc
+	src/model/CreateNodeBatchRequest.cc
+	src/model/CreateNodeBatchResult.cc
+	src/model/CreateShardingDBInstanceRequest.cc
+	src/model/CreateShardingDBInstanceResult.cc
+	src/model/DeleteDBInstanceRequest.cc
+	src/model/DeleteDBInstanceResult.cc
+	src/model/DeleteGlobalSecurityIPGroupRequest.cc
+	src/model/DeleteGlobalSecurityIPGroupResult.cc
+	src/model/DeleteNodeRequest.cc
+	src/model/DeleteNodeResult.cc
+	src/model/DescribeAccountsRequest.cc
+	src/model/DescribeAccountsResult.cc
+	src/model/DescribeActiveOperationMaintenanceConfigRequest.cc
+	src/model/DescribeActiveOperationMaintenanceConfigResult.cc
+	src/model/DescribeActiveOperationTaskRequest.cc
+	src/model/DescribeActiveOperationTaskResult.cc
+	src/model/DescribeActiveOperationTaskCountRequest.cc
+	src/model/DescribeActiveOperationTaskCountResult.cc
+	src/model/DescribeActiveOperationTaskRegionRequest.cc
+	src/model/DescribeActiveOperationTaskRegionResult.cc
+	src/model/DescribeActiveOperationTaskTypeRequest.cc
+	src/model/DescribeActiveOperationTaskTypeResult.cc
+	src/model/DescribeActiveOperationTasksRequest.cc
+	src/model/DescribeActiveOperationTasksResult.cc
+	src/model/DescribeAuditLogFilterRequest.cc
+	src/model/DescribeAuditLogFilterResult.cc
+	src/model/DescribeAuditPolicyRequest.cc
+	src/model/DescribeAuditPolicyResult.cc
+	src/model/DescribeAuditRecordsRequest.cc
+	src/model/DescribeAuditRecordsResult.cc
+	src/model/DescribeAvailabilityZonesRequest.cc
+	src/model/DescribeAvailabilityZonesResult.cc
+	src/model/DescribeAvailableEngineVersionRequest.cc
+	src/model/DescribeAvailableEngineVersionResult.cc
+	src/model/DescribeAvailableResourceRequest.cc
+	src/model/DescribeAvailableResourceResult.cc
+	src/model/DescribeBackupDBsRequest.cc
+	src/model/DescribeBackupDBsResult.cc
+	src/model/DescribeBackupPolicyRequest.cc
+	src/model/DescribeBackupPolicyResult.cc
+	src/model/DescribeBackupStorageRequest.cc
+	src/model/DescribeBackupStorageResult.cc
+	src/model/DescribeBackupTasksRequest.cc
+	src/model/DescribeBackupTasksResult.cc
+	src/model/DescribeBackupsRequest.cc
+	src/model/DescribeBackupsResult.cc
+	src/model/DescribeClusterBackupsRequest.cc
+	src/model/DescribeClusterBackupsResult.cc
+	src/model/DescribeClusterRecoverTimeRequest.cc
+	src/model/DescribeClusterRecoverTimeResult.cc
+	src/model/DescribeDBInstanceAttributeRequest.cc
+	src/model/DescribeDBInstanceAttributeResult.cc
+	src/model/DescribeDBInstanceEncryptionKeyRequest.cc
+	src/model/DescribeDBInstanceEncryptionKeyResult.cc
+	src/model/DescribeDBInstanceMonitorRequest.cc
+	src/model/DescribeDBInstanceMonitorResult.cc
+	src/model/DescribeDBInstancePerformanceRequest.cc
+	src/model/DescribeDBInstancePerformanceResult.cc
+	src/model/DescribeDBInstanceSSLRequest.cc
+	src/model/DescribeDBInstanceSSLResult.cc
+	src/model/DescribeDBInstanceSpecInfoRequest.cc
+	src/model/DescribeDBInstanceSpecInfoResult.cc
+	src/model/DescribeDBInstanceSwitchLogRequest.cc
+	src/model/DescribeDBInstanceSwitchLogResult.cc
+	src/model/DescribeDBInstanceTDEInfoRequest.cc
+	src/model/DescribeDBInstanceTDEInfoResult.cc
+	src/model/DescribeDBInstancesRequest.cc
+	src/model/DescribeDBInstancesResult.cc
+	src/model/DescribeDBInstancesOverviewRequest.cc
+	src/model/DescribeDBInstancesOverviewResult.cc
+	src/model/DescribeErrorLogRecordsRequest.cc
+	src/model/DescribeErrorLogRecordsResult.cc
+	src/model/DescribeGlobalSecurityIPGroupRequest.cc
+	src/model/DescribeGlobalSecurityIPGroupResult.cc
+	src/model/DescribeGlobalSecurityIPGroupRelationRequest.cc
+	src/model/DescribeGlobalSecurityIPGroupRelationResult.cc
+	src/model/DescribeHistoryTasksRequest.cc
+	src/model/DescribeHistoryTasksResult.cc
+	src/model/DescribeHistoryTasksStatRequest.cc
+	src/model/DescribeHistoryTasksStatResult.cc
+	src/model/DescribeInstanceAutoRenewalAttributeRequest.cc
+	src/model/DescribeInstanceAutoRenewalAttributeResult.cc
+	src/model/DescribeInstanceRecoverTimeRequest.cc
+	src/model/DescribeInstanceRecoverTimeResult.cc
+	src/model/DescribeKernelReleaseNotesRequest.cc
+	src/model/DescribeKernelReleaseNotesResult.cc
+	src/model/DescribeKmsKeysRequest.cc
+	src/model/DescribeKmsKeysResult.cc
+	src/model/DescribeMongoDBLogConfigRequest.cc
+	src/model/DescribeMongoDBLogConfigResult.cc
+	src/model/DescribeParameterModificationHistoryRequest.cc
+	src/model/DescribeParameterModificationHistoryResult.cc
+	src/model/DescribeParameterTemplatesRequest.cc
+	src/model/DescribeParameterTemplatesResult.cc
+	src/model/DescribeParametersRequest.cc
+	src/model/DescribeParametersResult.cc
+	src/model/DescribePriceRequest.cc
+	src/model/DescribePriceResult.cc
+	src/model/DescribeRegionsRequest.cc
+	src/model/DescribeRegionsResult.cc
+	src/model/DescribeRenewalPriceRequest.cc
+	src/model/DescribeRenewalPriceResult.cc
+	src/model/DescribeReplicaSetRoleRequest.cc
+	src/model/DescribeReplicaSetRoleResult.cc
+	src/model/DescribeRestoreDBInstanceListRequest.cc
+	src/model/DescribeRestoreDBInstanceListResult.cc
+	src/model/DescribeRoleZoneInfoRequest.cc
+	src/model/DescribeRoleZoneInfoResult.cc
+	src/model/DescribeRunningLogRecordsRequest.cc
+	src/model/DescribeRunningLogRecordsResult.cc
+	src/model/DescribeSecurityGroupConfigurationRequest.cc
+	src/model/DescribeSecurityGroupConfigurationResult.cc
+	src/model/DescribeSecurityIpsRequest.cc
+	src/model/DescribeSecurityIpsResult.cc
+	src/model/DescribeShardingNetworkAddressRequest.cc
+	src/model/DescribeShardingNetworkAddressResult.cc
+	src/model/DescribeSlowLogRecordsRequest.cc
+	src/model/DescribeSlowLogRecordsResult.cc
+	src/model/DescribeTagsRequest.cc
+	src/model/DescribeTagsResult.cc
+	src/model/DescribeUserEncryptionKeyListRequest.cc
+	src/model/DescribeUserEncryptionKeyListResult.cc
+	src/model/DestroyInstanceRequest.cc
+	src/model/DestroyInstanceResult.cc
+	src/model/EvaluateResourceRequest.cc
+	src/model/EvaluateResourceResult.cc
+	src/model/ListTagResourcesRequest.cc
+	src/model/ListTagResourcesResult.cc
+	src/model/MigrateAvailableZoneRequest.cc
+	src/model/MigrateAvailableZoneResult.cc
+	src/model/MigrateToOtherZoneRequest.cc
+	src/model/MigrateToOtherZoneResult.cc
+	src/model/ModifyAccountDescriptionRequest.cc
+	src/model/ModifyAccountDescriptionResult.cc
+	src/model/ModifyActiveOperationTasksRequest.cc
+	src/model/ModifyActiveOperationTasksResult.cc
+	src/model/ModifyAuditLogFilterRequest.cc
+	src/model/ModifyAuditLogFilterResult.cc
+	src/model/ModifyAuditPolicyRequest.cc
+	src/model/ModifyAuditPolicyResult.cc
+	src/model/ModifyBackupPolicyRequest.cc
+	src/model/ModifyBackupPolicyResult.cc
+	src/model/ModifyDBInstanceAttributeRequest.cc
+	src/model/ModifyDBInstanceAttributeResult.cc
+	src/model/ModifyDBInstanceConfigRequest.cc
+	src/model/ModifyDBInstanceConfigResult.cc
+	src/model/ModifyDBInstanceConnectionStringRequest.cc
+	src/model/ModifyDBInstanceConnectionStringResult.cc
+	src/model/ModifyDBInstanceDescriptionRequest.cc
+	src/model/ModifyDBInstanceDescriptionResult.cc
+	src/model/ModifyDBInstanceDiskTypeRequest.cc
+	src/model/ModifyDBInstanceDiskTypeResult.cc
+	src/model/ModifyDBInstanceMaintainTimeRequest.cc
+	src/model/ModifyDBInstanceMaintainTimeResult.cc
+	src/model/ModifyDBInstanceMonitorRequest.cc
+	src/model/ModifyDBInstanceMonitorResult.cc
+	src/model/ModifyDBInstanceNetExpireTimeRequest.cc
+	src/model/ModifyDBInstanceNetExpireTimeResult.cc
+	src/model/ModifyDBInstanceNetworkTypeRequest.cc
+	src/model/ModifyDBInstanceNetworkTypeResult.cc
+	src/model/ModifyDBInstanceSSLRequest.cc
+	src/model/ModifyDBInstanceSSLResult.cc
+	src/model/ModifyDBInstanceSpecRequest.cc
+	src/model/ModifyDBInstanceSpecResult.cc
+	src/model/ModifyDBInstanceTDERequest.cc
+	src/model/ModifyDBInstanceTDEResult.cc
+	src/model/ModifyGlobalSecurityIPGroupRequest.cc
+	src/model/ModifyGlobalSecurityIPGroupResult.cc
+	src/model/ModifyGlobalSecurityIPGroupNameRequest.cc
+	src/model/ModifyGlobalSecurityIPGroupNameResult.cc
+	src/model/ModifyGlobalSecurityIPGroupRelationRequest.cc
+	src/model/ModifyGlobalSecurityIPGroupRelationResult.cc
+	src/model/ModifyInstanceAutoRenewalAttributeRequest.cc
+	src/model/ModifyInstanceAutoRenewalAttributeResult.cc
+	src/model/ModifyInstanceVpcAuthModeRequest.cc
+	src/model/ModifyInstanceVpcAuthModeResult.cc
+	src/model/ModifyNodeSpecRequest.cc
+	src/model/ModifyNodeSpecResult.cc
+	src/model/ModifyNodeSpecBatchRequest.cc
+	src/model/ModifyNodeSpecBatchResult.cc
+	src/model/ModifyParametersRequest.cc
+	src/model/ModifyParametersResult.cc
+	src/model/ModifyResourceGroupRequest.cc
+	src/model/ModifyResourceGroupResult.cc
+	src/model/ModifySecurityGroupConfigurationRequest.cc
+	src/model/ModifySecurityGroupConfigurationResult.cc
+	src/model/ModifySecurityIpsRequest.cc
+	src/model/ModifySecurityIpsResult.cc
+	src/model/ModifyTaskInfoRequest.cc
+	src/model/ModifyTaskInfoResult.cc
+	src/model/ReleaseNodePrivateNetworkAddressRequest.cc
+	src/model/ReleaseNodePrivateNetworkAddressResult.cc
+	src/model/ReleasePublicNetworkAddressRequest.cc
+	src/model/ReleasePublicNetworkAddressResult.cc
+	src/model/RenewDBInstanceRequest.cc
+	src/model/RenewDBInstanceResult.cc
+	src/model/ResetAccountPasswordRequest.cc
+	src/model/ResetAccountPasswordResult.cc
+	src/model/RestartDBInstanceRequest.cc
+	src/model/RestartDBInstanceResult.cc
+	src/model/RestartNodeRequest.cc
+	src/model/RestartNodeResult.cc
+	src/model/SwitchDBInstanceHARequest.cc
+	src/model/SwitchDBInstanceHAResult.cc
+	src/model/TagResourcesRequest.cc
+	src/model/TagResourcesResult.cc
+	src/model/TransferClusterBackupRequest.cc
+	src/model/TransferClusterBackupResult.cc
+	src/model/TransformInstanceChargeTypeRequest.cc
+	src/model/TransformInstanceChargeTypeResult.cc
+	src/model/TransformToPrePaidRequest.cc
+	src/model/TransformToPrePaidResult.cc
+	src/model/UntagResourcesRequest.cc
+	src/model/UntagResourcesResult.cc
+	src/model/UpgradeDBInstanceEngineVersionRequest.cc
+	src/model/UpgradeDBInstanceEngineVersionResult.cc
+	src/model/UpgradeDBInstanceKernelVersionRequest.cc
+	src/model/UpgradeDBInstanceKernelVersionResult.cc )
+
+add_library(dds ${LIB_TYPE}
+	${dds_public_header}
+	${dds_public_header_model}
+	${dds_src})
+
+set_target_properties(dds
+	PROPERTIES
+	LINKER_LANGUAGE CXX
+	ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+	LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+	OUTPUT_NAME ${TARGET_OUTPUT_NAME_PREFIX}dds
+	)
+
+if(${LIB_TYPE} STREQUAL "SHARED")
+	set_target_properties(dds
+		PROPERTIES
+		DEFINE_SYMBOL ALIBABACLOUD_DDS_LIBRARY)
+endif()
+
+target_include_directories(dds
+	PRIVATE include
+		${CMAKE_SOURCE_DIR}/core/include
+	)
+target_link_libraries(dds
+	core)
+
+if(CMAKE_HOST_WIN32)
+	ExternalProject_Get_Property(jsoncpp INSTALL_DIR)
+	set(jsoncpp_install_dir ${INSTALL_DIR})
+	add_dependencies(dds
+		jsoncpp)
+	target_include_directories(dds
+		PRIVATE	${jsoncpp_install_dir}/include)
+	target_link_libraries(dds
+		${jsoncpp_install_dir}/lib/jsoncpp.lib)
+	set_target_properties(dds
+    	PROPERTIES
+    		COMPILE_OPTIONS "/bigobj")
+else()
+	target_include_directories(dds
+		PRIVATE /usr/include/jsoncpp)
+	target_link_libraries(dds
+		jsoncpp)
+endif()
+
+install(FILES ${dds_public_header}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/alibabacloud/dds)
+install(FILES ${dds_public_header_model}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/alibabacloud/dds/model)
+install(TARGETS dds
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	)

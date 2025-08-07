@@ -1,0 +1,17 @@
+tools/endpoints.json
+initCoverage.info
+testCoverage.info
+coverageReport/
+Testing/
+.vscode/
+ft_build/
+ut_build/
+sdk_build/
+examples/build/
+test/httpserver/node_modules
+test/httpserver/package-lock.json
+test/httpserver/nohup.out
+.idea
+build/
+cmake-build-debug/
+.DS_Store

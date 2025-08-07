@@ -1,0 +1,3 @@
+/home/ubuntu/chat-system/cmake/hello-world/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/chat-system/cmake/hello-world/CMakeFiles/edit_cache.dir
+/home/ubuntu/chat-system/cmake/hello-world/CMakeFiles/hello.dir

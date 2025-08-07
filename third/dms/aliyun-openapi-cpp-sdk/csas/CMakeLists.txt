@@ -1,0 +1,482 @@
+#
+# Copyright 2009-2017 Alibaba Cloud All rights reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+set(public_header_dir ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+
+set(csas_public_header 
+	include/alibabacloud/csas/CsasClient.h
+	include/alibabacloud/csas/CsasExport.h )
+
+set(csas_public_header_model 
+	include/alibabacloud/csas/model/AttachApplication2ConnectorRequest.h
+	include/alibabacloud/csas/model/AttachApplication2ConnectorResult.h
+	include/alibabacloud/csas/model/AttachPolicy2ApprovalProcessRequest.h
+	include/alibabacloud/csas/model/AttachPolicy2ApprovalProcessResult.h
+	include/alibabacloud/csas/model/CreateApprovalProcessRequest.h
+	include/alibabacloud/csas/model/CreateApprovalProcessResult.h
+	include/alibabacloud/csas/model/CreateClientUserRequest.h
+	include/alibabacloud/csas/model/CreateClientUserResult.h
+	include/alibabacloud/csas/model/CreateDynamicRouteRequest.h
+	include/alibabacloud/csas/model/CreateDynamicRouteResult.h
+	include/alibabacloud/csas/model/CreateIdpDepartmentRequest.h
+	include/alibabacloud/csas/model/CreateIdpDepartmentResult.h
+	include/alibabacloud/csas/model/CreatePrivateAccessApplicationRequest.h
+	include/alibabacloud/csas/model/CreatePrivateAccessApplicationResult.h
+	include/alibabacloud/csas/model/CreatePrivateAccessPolicyRequest.h
+	include/alibabacloud/csas/model/CreatePrivateAccessPolicyResult.h
+	include/alibabacloud/csas/model/CreatePrivateAccessTagRequest.h
+	include/alibabacloud/csas/model/CreatePrivateAccessTagResult.h
+	include/alibabacloud/csas/model/CreateRegistrationPolicyRequest.h
+	include/alibabacloud/csas/model/CreateRegistrationPolicyResult.h
+	include/alibabacloud/csas/model/CreateUserGroupRequest.h
+	include/alibabacloud/csas/model/CreateUserGroupResult.h
+	include/alibabacloud/csas/model/CreateWmBaseImageRequest.h
+	include/alibabacloud/csas/model/CreateWmBaseImageResult.h
+	include/alibabacloud/csas/model/CreateWmEmbedTaskRequest.h
+	include/alibabacloud/csas/model/CreateWmEmbedTaskResult.h
+	include/alibabacloud/csas/model/CreateWmExtractTaskRequest.h
+	include/alibabacloud/csas/model/CreateWmExtractTaskResult.h
+	include/alibabacloud/csas/model/CreateWmInfoMappingRequest.h
+	include/alibabacloud/csas/model/CreateWmInfoMappingResult.h
+	include/alibabacloud/csas/model/DeleteApprovalProcessesRequest.h
+	include/alibabacloud/csas/model/DeleteApprovalProcessesResult.h
+	include/alibabacloud/csas/model/DeleteClientUserRequest.h
+	include/alibabacloud/csas/model/DeleteClientUserResult.h
+	include/alibabacloud/csas/model/DeleteDynamicRouteRequest.h
+	include/alibabacloud/csas/model/DeleteDynamicRouteResult.h
+	include/alibabacloud/csas/model/DeleteIdpDepartmentRequest.h
+	include/alibabacloud/csas/model/DeleteIdpDepartmentResult.h
+	include/alibabacloud/csas/model/DeletePrivateAccessApplicationRequest.h
+	include/alibabacloud/csas/model/DeletePrivateAccessApplicationResult.h
+	include/alibabacloud/csas/model/DeletePrivateAccessPolicyRequest.h
+	include/alibabacloud/csas/model/DeletePrivateAccessPolicyResult.h
+	include/alibabacloud/csas/model/DeletePrivateAccessTagRequest.h
+	include/alibabacloud/csas/model/DeletePrivateAccessTagResult.h
+	include/alibabacloud/csas/model/DeleteRegistrationPoliciesRequest.h
+	include/alibabacloud/csas/model/DeleteRegistrationPoliciesResult.h
+	include/alibabacloud/csas/model/DeleteUserDevicesRequest.h
+	include/alibabacloud/csas/model/DeleteUserDevicesResult.h
+	include/alibabacloud/csas/model/DeleteUserGroupRequest.h
+	include/alibabacloud/csas/model/DeleteUserGroupResult.h
+	include/alibabacloud/csas/model/DetachApplication2ConnectorRequest.h
+	include/alibabacloud/csas/model/DetachApplication2ConnectorResult.h
+	include/alibabacloud/csas/model/DetachPolicy2ApprovalProcessRequest.h
+	include/alibabacloud/csas/model/DetachPolicy2ApprovalProcessResult.h
+	include/alibabacloud/csas/model/ExportUserDevicesRequest.h
+	include/alibabacloud/csas/model/ExportUserDevicesResult.h
+	include/alibabacloud/csas/model/GetActiveIdpConfigRequest.h
+	include/alibabacloud/csas/model/GetActiveIdpConfigResult.h
+	include/alibabacloud/csas/model/GetApprovalRequest.h
+	include/alibabacloud/csas/model/GetApprovalResult.h
+	include/alibabacloud/csas/model/GetApprovalProcessRequest.h
+	include/alibabacloud/csas/model/GetApprovalProcessResult.h
+	include/alibabacloud/csas/model/GetApprovalSchemaRequest.h
+	include/alibabacloud/csas/model/GetApprovalSchemaResult.h
+	include/alibabacloud/csas/model/GetBootAndAntiUninstallPolicyRequest.h
+	include/alibabacloud/csas/model/GetBootAndAntiUninstallPolicyResult.h
+	include/alibabacloud/csas/model/GetClientUserRequest.h
+	include/alibabacloud/csas/model/GetClientUserResult.h
+	include/alibabacloud/csas/model/GetDynamicRouteRequest.h
+	include/alibabacloud/csas/model/GetDynamicRouteResult.h
+	include/alibabacloud/csas/model/GetIdpConfigRequest.h
+	include/alibabacloud/csas/model/GetIdpConfigResult.h
+	include/alibabacloud/csas/model/GetPrivateAccessApplicationRequest.h
+	include/alibabacloud/csas/model/GetPrivateAccessApplicationResult.h
+	include/alibabacloud/csas/model/GetPrivateAccessPolicyRequest.h
+	include/alibabacloud/csas/model/GetPrivateAccessPolicyResult.h
+	include/alibabacloud/csas/model/GetRegistrationPolicyRequest.h
+	include/alibabacloud/csas/model/GetRegistrationPolicyResult.h
+	include/alibabacloud/csas/model/GetUserDeviceRequest.h
+	include/alibabacloud/csas/model/GetUserDeviceResult.h
+	include/alibabacloud/csas/model/GetUserGroupRequest.h
+	include/alibabacloud/csas/model/GetUserGroupResult.h
+	include/alibabacloud/csas/model/GetWmEmbedTaskRequest.h
+	include/alibabacloud/csas/model/GetWmEmbedTaskResult.h
+	include/alibabacloud/csas/model/GetWmExtractTaskRequest.h
+	include/alibabacloud/csas/model/GetWmExtractTaskResult.h
+	include/alibabacloud/csas/model/ListApplicationsForPrivateAccessPolicyRequest.h
+	include/alibabacloud/csas/model/ListApplicationsForPrivateAccessPolicyResult.h
+	include/alibabacloud/csas/model/ListApplicationsForPrivateAccessTagRequest.h
+	include/alibabacloud/csas/model/ListApplicationsForPrivateAccessTagResult.h
+	include/alibabacloud/csas/model/ListApprovalProcessesRequest.h
+	include/alibabacloud/csas/model/ListApprovalProcessesResult.h
+	include/alibabacloud/csas/model/ListApprovalProcessesForApprovalSchemasRequest.h
+	include/alibabacloud/csas/model/ListApprovalProcessesForApprovalSchemasResult.h
+	include/alibabacloud/csas/model/ListApprovalSchemasRequest.h
+	include/alibabacloud/csas/model/ListApprovalSchemasResult.h
+	include/alibabacloud/csas/model/ListApprovalSchemasForApprovalProcessesRequest.h
+	include/alibabacloud/csas/model/ListApprovalSchemasForApprovalProcessesResult.h
+	include/alibabacloud/csas/model/ListApprovalsRequest.h
+	include/alibabacloud/csas/model/ListApprovalsResult.h
+	include/alibabacloud/csas/model/ListClientUsersRequest.h
+	include/alibabacloud/csas/model/ListClientUsersResult.h
+	include/alibabacloud/csas/model/ListConnectorsRequest.h
+	include/alibabacloud/csas/model/ListConnectorsResult.h
+	include/alibabacloud/csas/model/ListDynamicRouteRegionsRequest.h
+	include/alibabacloud/csas/model/ListDynamicRouteRegionsResult.h
+	include/alibabacloud/csas/model/ListDynamicRoutesRequest.h
+	include/alibabacloud/csas/model/ListDynamicRoutesResult.h
+	include/alibabacloud/csas/model/ListExcessiveDeviceRegistrationApplicationsRequest.h
+	include/alibabacloud/csas/model/ListExcessiveDeviceRegistrationApplicationsResult.h
+	include/alibabacloud/csas/model/ListIdpConfigsRequest.h
+	include/alibabacloud/csas/model/ListIdpConfigsResult.h
+	include/alibabacloud/csas/model/ListIdpDepartmentsRequest.h
+	include/alibabacloud/csas/model/ListIdpDepartmentsResult.h
+	include/alibabacloud/csas/model/ListNacUserCertRequest.h
+	include/alibabacloud/csas/model/ListNacUserCertResult.h
+	include/alibabacloud/csas/model/ListPolicesForPrivateAccessApplicationRequest.h
+	include/alibabacloud/csas/model/ListPolicesForPrivateAccessApplicationResult.h
+	include/alibabacloud/csas/model/ListPolicesForPrivateAccessTagRequest.h
+	include/alibabacloud/csas/model/ListPolicesForPrivateAccessTagResult.h
+	include/alibabacloud/csas/model/ListPolicesForUserGroupRequest.h
+	include/alibabacloud/csas/model/ListPolicesForUserGroupResult.h
+	include/alibabacloud/csas/model/ListPopTrafficStatisticsRequest.h
+	include/alibabacloud/csas/model/ListPopTrafficStatisticsResult.h
+	include/alibabacloud/csas/model/ListPrivateAccessApplicationsRequest.h
+	include/alibabacloud/csas/model/ListPrivateAccessApplicationsResult.h
+	include/alibabacloud/csas/model/ListPrivateAccessApplicationsForDynamicRouteRequest.h
+	include/alibabacloud/csas/model/ListPrivateAccessApplicationsForDynamicRouteResult.h
+	include/alibabacloud/csas/model/ListPrivateAccessPolicesRequest.h
+	include/alibabacloud/csas/model/ListPrivateAccessPolicesResult.h
+	include/alibabacloud/csas/model/ListPrivateAccessTagsRequest.h
+	include/alibabacloud/csas/model/ListPrivateAccessTagsResult.h
+	include/alibabacloud/csas/model/ListPrivateAccessTagsForDynamicRouteRequest.h
+	include/alibabacloud/csas/model/ListPrivateAccessTagsForDynamicRouteResult.h
+	include/alibabacloud/csas/model/ListRegistrationPoliciesRequest.h
+	include/alibabacloud/csas/model/ListRegistrationPoliciesResult.h
+	include/alibabacloud/csas/model/ListRegistrationPoliciesForUserGroupRequest.h
+	include/alibabacloud/csas/model/ListRegistrationPoliciesForUserGroupResult.h
+	include/alibabacloud/csas/model/ListSoftwareForUserDeviceRequest.h
+	include/alibabacloud/csas/model/ListSoftwareForUserDeviceResult.h
+	include/alibabacloud/csas/model/ListTagsForPrivateAccessApplicationRequest.h
+	include/alibabacloud/csas/model/ListTagsForPrivateAccessApplicationResult.h
+	include/alibabacloud/csas/model/ListTagsForPrivateAccessPolicyRequest.h
+	include/alibabacloud/csas/model/ListTagsForPrivateAccessPolicyResult.h
+	include/alibabacloud/csas/model/ListUninstallApplicationsRequest.h
+	include/alibabacloud/csas/model/ListUninstallApplicationsResult.h
+	include/alibabacloud/csas/model/ListUserApplicationsRequest.h
+	include/alibabacloud/csas/model/ListUserApplicationsResult.h
+	include/alibabacloud/csas/model/ListUserDevicesRequest.h
+	include/alibabacloud/csas/model/ListUserDevicesResult.h
+	include/alibabacloud/csas/model/ListUserGroupsRequest.h
+	include/alibabacloud/csas/model/ListUserGroupsResult.h
+	include/alibabacloud/csas/model/ListUserGroupsForPrivateAccessPolicyRequest.h
+	include/alibabacloud/csas/model/ListUserGroupsForPrivateAccessPolicyResult.h
+	include/alibabacloud/csas/model/ListUserGroupsForRegistrationPolicyRequest.h
+	include/alibabacloud/csas/model/ListUserGroupsForRegistrationPolicyResult.h
+	include/alibabacloud/csas/model/ListUserPrivateAccessPoliciesRequest.h
+	include/alibabacloud/csas/model/ListUserPrivateAccessPoliciesResult.h
+	include/alibabacloud/csas/model/ListUsersRequest.h
+	include/alibabacloud/csas/model/ListUsersResult.h
+	include/alibabacloud/csas/model/LookupWmInfoMappingRequest.h
+	include/alibabacloud/csas/model/LookupWmInfoMappingResult.h
+	include/alibabacloud/csas/model/RevokeUserSessionRequest.h
+	include/alibabacloud/csas/model/RevokeUserSessionResult.h
+	include/alibabacloud/csas/model/UpdateApprovalProcessRequest.h
+	include/alibabacloud/csas/model/UpdateApprovalProcessResult.h
+	include/alibabacloud/csas/model/UpdateApprovalStatusRequest.h
+	include/alibabacloud/csas/model/UpdateApprovalStatusResult.h
+	include/alibabacloud/csas/model/UpdateBootAndAntiUninstallPolicyRequest.h
+	include/alibabacloud/csas/model/UpdateBootAndAntiUninstallPolicyResult.h
+	include/alibabacloud/csas/model/UpdateClientUserRequest.h
+	include/alibabacloud/csas/model/UpdateClientUserResult.h
+	include/alibabacloud/csas/model/UpdateClientUserPasswordRequest.h
+	include/alibabacloud/csas/model/UpdateClientUserPasswordResult.h
+	include/alibabacloud/csas/model/UpdateClientUserStatusRequest.h
+	include/alibabacloud/csas/model/UpdateClientUserStatusResult.h
+	include/alibabacloud/csas/model/UpdateDynamicRouteRequest.h
+	include/alibabacloud/csas/model/UpdateDynamicRouteResult.h
+	include/alibabacloud/csas/model/UpdateExcessiveDeviceRegistrationApplicationsStatusRequest.h
+	include/alibabacloud/csas/model/UpdateExcessiveDeviceRegistrationApplicationsStatusResult.h
+	include/alibabacloud/csas/model/UpdateIdpDepartmentRequest.h
+	include/alibabacloud/csas/model/UpdateIdpDepartmentResult.h
+	include/alibabacloud/csas/model/UpdateNacUserCertStatusRequest.h
+	include/alibabacloud/csas/model/UpdateNacUserCertStatusResult.h
+	include/alibabacloud/csas/model/UpdatePrivateAccessApplicationRequest.h
+	include/alibabacloud/csas/model/UpdatePrivateAccessApplicationResult.h
+	include/alibabacloud/csas/model/UpdatePrivateAccessPolicyRequest.h
+	include/alibabacloud/csas/model/UpdatePrivateAccessPolicyResult.h
+	include/alibabacloud/csas/model/UpdateRegistrationPolicyRequest.h
+	include/alibabacloud/csas/model/UpdateRegistrationPolicyResult.h
+	include/alibabacloud/csas/model/UpdateUninstallApplicationsStatusRequest.h
+	include/alibabacloud/csas/model/UpdateUninstallApplicationsStatusResult.h
+	include/alibabacloud/csas/model/UpdateUserDevicesSharingStatusRequest.h
+	include/alibabacloud/csas/model/UpdateUserDevicesSharingStatusResult.h
+	include/alibabacloud/csas/model/UpdateUserDevicesStatusRequest.h
+	include/alibabacloud/csas/model/UpdateUserDevicesStatusResult.h
+	include/alibabacloud/csas/model/UpdateUserGroupRequest.h
+	include/alibabacloud/csas/model/UpdateUserGroupResult.h
+	include/alibabacloud/csas/model/UpdateUsersStatusRequest.h
+	include/alibabacloud/csas/model/UpdateUsersStatusResult.h )
+
+set(csas_src 
+	src/CsasClient.cc
+	src/model/AttachApplication2ConnectorRequest.cc
+	src/model/AttachApplication2ConnectorResult.cc
+	src/model/AttachPolicy2ApprovalProcessRequest.cc
+	src/model/AttachPolicy2ApprovalProcessResult.cc
+	src/model/CreateApprovalProcessRequest.cc
+	src/model/CreateApprovalProcessResult.cc
+	src/model/CreateClientUserRequest.cc
+	src/model/CreateClientUserResult.cc
+	src/model/CreateDynamicRouteRequest.cc
+	src/model/CreateDynamicRouteResult.cc
+	src/model/CreateIdpDepartmentRequest.cc
+	src/model/CreateIdpDepartmentResult.cc
+	src/model/CreatePrivateAccessApplicationRequest.cc
+	src/model/CreatePrivateAccessApplicationResult.cc
+	src/model/CreatePrivateAccessPolicyRequest.cc
+	src/model/CreatePrivateAccessPolicyResult.cc
+	src/model/CreatePrivateAccessTagRequest.cc
+	src/model/CreatePrivateAccessTagResult.cc
+	src/model/CreateRegistrationPolicyRequest.cc
+	src/model/CreateRegistrationPolicyResult.cc
+	src/model/CreateUserGroupRequest.cc
+	src/model/CreateUserGroupResult.cc
+	src/model/CreateWmBaseImageRequest.cc
+	src/model/CreateWmBaseImageResult.cc
+	src/model/CreateWmEmbedTaskRequest.cc
+	src/model/CreateWmEmbedTaskResult.cc
+	src/model/CreateWmExtractTaskRequest.cc
+	src/model/CreateWmExtractTaskResult.cc
+	src/model/CreateWmInfoMappingRequest.cc
+	src/model/CreateWmInfoMappingResult.cc
+	src/model/DeleteApprovalProcessesRequest.cc
+	src/model/DeleteApprovalProcessesResult.cc
+	src/model/DeleteClientUserRequest.cc
+	src/model/DeleteClientUserResult.cc
+	src/model/DeleteDynamicRouteRequest.cc
+	src/model/DeleteDynamicRouteResult.cc
+	src/model/DeleteIdpDepartmentRequest.cc
+	src/model/DeleteIdpDepartmentResult.cc
+	src/model/DeletePrivateAccessApplicationRequest.cc
+	src/model/DeletePrivateAccessApplicationResult.cc
+	src/model/DeletePrivateAccessPolicyRequest.cc
+	src/model/DeletePrivateAccessPolicyResult.cc
+	src/model/DeletePrivateAccessTagRequest.cc
+	src/model/DeletePrivateAccessTagResult.cc
+	src/model/DeleteRegistrationPoliciesRequest.cc
+	src/model/DeleteRegistrationPoliciesResult.cc
+	src/model/DeleteUserDevicesRequest.cc
+	src/model/DeleteUserDevicesResult.cc
+	src/model/DeleteUserGroupRequest.cc
+	src/model/DeleteUserGroupResult.cc
+	src/model/DetachApplication2ConnectorRequest.cc
+	src/model/DetachApplication2ConnectorResult.cc
+	src/model/DetachPolicy2ApprovalProcessRequest.cc
+	src/model/DetachPolicy2ApprovalProcessResult.cc
+	src/model/ExportUserDevicesRequest.cc
+	src/model/ExportUserDevicesResult.cc
+	src/model/GetActiveIdpConfigRequest.cc
+	src/model/GetActiveIdpConfigResult.cc
+	src/model/GetApprovalRequest.cc
+	src/model/GetApprovalResult.cc
+	src/model/GetApprovalProcessRequest.cc
+	src/model/GetApprovalProcessResult.cc
+	src/model/GetApprovalSchemaRequest.cc
+	src/model/GetApprovalSchemaResult.cc
+	src/model/GetBootAndAntiUninstallPolicyRequest.cc
+	src/model/GetBootAndAntiUninstallPolicyResult.cc
+	src/model/GetClientUserRequest.cc
+	src/model/GetClientUserResult.cc
+	src/model/GetDynamicRouteRequest.cc
+	src/model/GetDynamicRouteResult.cc
+	src/model/GetIdpConfigRequest.cc
+	src/model/GetIdpConfigResult.cc
+	src/model/GetPrivateAccessApplicationRequest.cc
+	src/model/GetPrivateAccessApplicationResult.cc
+	src/model/GetPrivateAccessPolicyRequest.cc
+	src/model/GetPrivateAccessPolicyResult.cc
+	src/model/GetRegistrationPolicyRequest.cc
+	src/model/GetRegistrationPolicyResult.cc
+	src/model/GetUserDeviceRequest.cc
+	src/model/GetUserDeviceResult.cc
+	src/model/GetUserGroupRequest.cc
+	src/model/GetUserGroupResult.cc
+	src/model/GetWmEmbedTaskRequest.cc
+	src/model/GetWmEmbedTaskResult.cc
+	src/model/GetWmExtractTaskRequest.cc
+	src/model/GetWmExtractTaskResult.cc
+	src/model/ListApplicationsForPrivateAccessPolicyRequest.cc
+	src/model/ListApplicationsForPrivateAccessPolicyResult.cc
+	src/model/ListApplicationsForPrivateAccessTagRequest.cc
+	src/model/ListApplicationsForPrivateAccessTagResult.cc
+	src/model/ListApprovalProcessesRequest.cc
+	src/model/ListApprovalProcessesResult.cc
+	src/model/ListApprovalProcessesForApprovalSchemasRequest.cc
+	src/model/ListApprovalProcessesForApprovalSchemasResult.cc
+	src/model/ListApprovalSchemasRequest.cc
+	src/model/ListApprovalSchemasResult.cc
+	src/model/ListApprovalSchemasForApprovalProcessesRequest.cc
+	src/model/ListApprovalSchemasForApprovalProcessesResult.cc
+	src/model/ListApprovalsRequest.cc
+	src/model/ListApprovalsResult.cc
+	src/model/ListClientUsersRequest.cc
+	src/model/ListClientUsersResult.cc
+	src/model/ListConnectorsRequest.cc
+	src/model/ListConnectorsResult.cc
+	src/model/ListDynamicRouteRegionsRequest.cc
+	src/model/ListDynamicRouteRegionsResult.cc
+	src/model/ListDynamicRoutesRequest.cc
+	src/model/ListDynamicRoutesResult.cc
+	src/model/ListExcessiveDeviceRegistrationApplicationsRequest.cc
+	src/model/ListExcessiveDeviceRegistrationApplicationsResult.cc
+	src/model/ListIdpConfigsRequest.cc
+	src/model/ListIdpConfigsResult.cc
+	src/model/ListIdpDepartmentsRequest.cc
+	src/model/ListIdpDepartmentsResult.cc
+	src/model/ListNacUserCertRequest.cc
+	src/model/ListNacUserCertResult.cc
+	src/model/ListPolicesForPrivateAccessApplicationRequest.cc
+	src/model/ListPolicesForPrivateAccessApplicationResult.cc
+	src/model/ListPolicesForPrivateAccessTagRequest.cc
+	src/model/ListPolicesForPrivateAccessTagResult.cc
+	src/model/ListPolicesForUserGroupRequest.cc
+	src/model/ListPolicesForUserGroupResult.cc
+	src/model/ListPopTrafficStatisticsRequest.cc
+	src/model/ListPopTrafficStatisticsResult.cc
+	src/model/ListPrivateAccessApplicationsRequest.cc
+	src/model/ListPrivateAccessApplicationsResult.cc
+	src/model/ListPrivateAccessApplicationsForDynamicRouteRequest.cc
+	src/model/ListPrivateAccessApplicationsForDynamicRouteResult.cc
+	src/model/ListPrivateAccessPolicesRequest.cc
+	src/model/ListPrivateAccessPolicesResult.cc
+	src/model/ListPrivateAccessTagsRequest.cc
+	src/model/ListPrivateAccessTagsResult.cc
+	src/model/ListPrivateAccessTagsForDynamicRouteRequest.cc
+	src/model/ListPrivateAccessTagsForDynamicRouteResult.cc
+	src/model/ListRegistrationPoliciesRequest.cc
+	src/model/ListRegistrationPoliciesResult.cc
+	src/model/ListRegistrationPoliciesForUserGroupRequest.cc
+	src/model/ListRegistrationPoliciesForUserGroupResult.cc
+	src/model/ListSoftwareForUserDeviceRequest.cc
+	src/model/ListSoftwareForUserDeviceResult.cc
+	src/model/ListTagsForPrivateAccessApplicationRequest.cc
+	src/model/ListTagsForPrivateAccessApplicationResult.cc
+	src/model/ListTagsForPrivateAccessPolicyRequest.cc
+	src/model/ListTagsForPrivateAccessPolicyResult.cc
+	src/model/ListUninstallApplicationsRequest.cc
+	src/model/ListUninstallApplicationsResult.cc
+	src/model/ListUserApplicationsRequest.cc
+	src/model/ListUserApplicationsResult.cc
+	src/model/ListUserDevicesRequest.cc
+	src/model/ListUserDevicesResult.cc
+	src/model/ListUserGroupsRequest.cc
+	src/model/ListUserGroupsResult.cc
+	src/model/ListUserGroupsForPrivateAccessPolicyRequest.cc
+	src/model/ListUserGroupsForPrivateAccessPolicyResult.cc
+	src/model/ListUserGroupsForRegistrationPolicyRequest.cc
+	src/model/ListUserGroupsForRegistrationPolicyResult.cc
+	src/model/ListUserPrivateAccessPoliciesRequest.cc
+	src/model/ListUserPrivateAccessPoliciesResult.cc
+	src/model/ListUsersRequest.cc
+	src/model/ListUsersResult.cc
+	src/model/LookupWmInfoMappingRequest.cc
+	src/model/LookupWmInfoMappingResult.cc
+	src/model/RevokeUserSessionRequest.cc
+	src/model/RevokeUserSessionResult.cc
+	src/model/UpdateApprovalProcessRequest.cc
+	src/model/UpdateApprovalProcessResult.cc
+	src/model/UpdateApprovalStatusRequest.cc
+	src/model/UpdateApprovalStatusResult.cc
+	src/model/UpdateBootAndAntiUninstallPolicyRequest.cc
+	src/model/UpdateBootAndAntiUninstallPolicyResult.cc
+	src/model/UpdateClientUserRequest.cc
+	src/model/UpdateClientUserResult.cc
+	src/model/UpdateClientUserPasswordRequest.cc
+	src/model/UpdateClientUserPasswordResult.cc
+	src/model/UpdateClientUserStatusRequest.cc
+	src/model/UpdateClientUserStatusResult.cc
+	src/model/UpdateDynamicRouteRequest.cc
+	src/model/UpdateDynamicRouteResult.cc
+	src/model/UpdateExcessiveDeviceRegistrationApplicationsStatusRequest.cc
+	src/model/UpdateExcessiveDeviceRegistrationApplicationsStatusResult.cc
+	src/model/UpdateIdpDepartmentRequest.cc
+	src/model/UpdateIdpDepartmentResult.cc
+	src/model/UpdateNacUserCertStatusRequest.cc
+	src/model/UpdateNacUserCertStatusResult.cc
+	src/model/UpdatePrivateAccessApplicationRequest.cc
+	src/model/UpdatePrivateAccessApplicationResult.cc
+	src/model/UpdatePrivateAccessPolicyRequest.cc
+	src/model/UpdatePrivateAccessPolicyResult.cc
+	src/model/UpdateRegistrationPolicyRequest.cc
+	src/model/UpdateRegistrationPolicyResult.cc
+	src/model/UpdateUninstallApplicationsStatusRequest.cc
+	src/model/UpdateUninstallApplicationsStatusResult.cc
+	src/model/UpdateUserDevicesSharingStatusRequest.cc
+	src/model/UpdateUserDevicesSharingStatusResult.cc
+	src/model/UpdateUserDevicesStatusRequest.cc
+	src/model/UpdateUserDevicesStatusResult.cc
+	src/model/UpdateUserGroupRequest.cc
+	src/model/UpdateUserGroupResult.cc
+	src/model/UpdateUsersStatusRequest.cc
+	src/model/UpdateUsersStatusResult.cc )
+
+add_library(csas ${LIB_TYPE}
+	${csas_public_header}
+	${csas_public_header_model}
+	${csas_src})
+
+set_target_properties(csas
+	PROPERTIES
+	LINKER_LANGUAGE CXX
+	ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+	LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+	OUTPUT_NAME ${TARGET_OUTPUT_NAME_PREFIX}csas
+	)
+
+if(${LIB_TYPE} STREQUAL "SHARED")
+	set_target_properties(csas
+		PROPERTIES
+		DEFINE_SYMBOL ALIBABACLOUD_CSAS_LIBRARY)
+endif()
+
+target_include_directories(csas
+	PRIVATE include
+		${CMAKE_SOURCE_DIR}/core/include
+	)
+target_link_libraries(csas
+	core)
+
+if(CMAKE_HOST_WIN32)
+	ExternalProject_Get_Property(jsoncpp INSTALL_DIR)
+	set(jsoncpp_install_dir ${INSTALL_DIR})
+	add_dependencies(csas
+		jsoncpp)
+	target_include_directories(csas
+		PRIVATE	${jsoncpp_install_dir}/include)
+	target_link_libraries(csas
+		${jsoncpp_install_dir}/lib/jsoncpp.lib)
+	set_target_properties(csas
+    	PROPERTIES
+    		COMPILE_OPTIONS "/bigobj")
+else()
+	target_include_directories(csas
+		PRIVATE /usr/include/jsoncpp)
+	target_link_libraries(csas
+		jsoncpp)
+endif()
+
+install(FILES ${csas_public_header}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/alibabacloud/csas)
+install(FILES ${csas_public_header_model}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/alibabacloud/csas/model)
+install(TARGETS csas
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	)

@@ -1,0 +1,506 @@
+#
+# Copyright 2009-2017 Alibaba Cloud All rights reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+set(public_header_dir ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+
+set(drds_public_header 
+	include/alibabacloud/drds/DrdsClient.h
+	include/alibabacloud/drds/DrdsExport.h )
+
+set(drds_public_header_model 
+	include/alibabacloud/drds/model/ChangeAccountPasswordRequest.h
+	include/alibabacloud/drds/model/ChangeAccountPasswordResult.h
+	include/alibabacloud/drds/model/ChangeInstanceAzoneRequest.h
+	include/alibabacloud/drds/model/ChangeInstanceAzoneResult.h
+	include/alibabacloud/drds/model/CheckDrdsDbNameRequest.h
+	include/alibabacloud/drds/model/CheckDrdsDbNameResult.h
+	include/alibabacloud/drds/model/CheckExpandStatusRequest.h
+	include/alibabacloud/drds/model/CheckExpandStatusResult.h
+	include/alibabacloud/drds/model/CheckSqlAuditEnableStatusRequest.h
+	include/alibabacloud/drds/model/CheckSqlAuditEnableStatusResult.h
+	include/alibabacloud/drds/model/CreateDrdsDBRequest.h
+	include/alibabacloud/drds/model/CreateDrdsDBResult.h
+	include/alibabacloud/drds/model/CreateDrdsInstanceRequest.h
+	include/alibabacloud/drds/model/CreateDrdsInstanceResult.h
+	include/alibabacloud/drds/model/CreateInstanceAccountRequest.h
+	include/alibabacloud/drds/model/CreateInstanceAccountResult.h
+	include/alibabacloud/drds/model/CreateInstanceInternetAddressRequest.h
+	include/alibabacloud/drds/model/CreateInstanceInternetAddressResult.h
+	include/alibabacloud/drds/model/CreateOrderForRdsRequest.h
+	include/alibabacloud/drds/model/CreateOrderForRdsResult.h
+	include/alibabacloud/drds/model/CreateShardTaskRequest.h
+	include/alibabacloud/drds/model/CreateShardTaskResult.h
+	include/alibabacloud/drds/model/DescribeBackMenuRequest.h
+	include/alibabacloud/drds/model/DescribeBackMenuResult.h
+	include/alibabacloud/drds/model/DescribeBackupDbsRequest.h
+	include/alibabacloud/drds/model/DescribeBackupDbsResult.h
+	include/alibabacloud/drds/model/DescribeBackupLocalRequest.h
+	include/alibabacloud/drds/model/DescribeBackupLocalResult.h
+	include/alibabacloud/drds/model/DescribeBackupPolicyRequest.h
+	include/alibabacloud/drds/model/DescribeBackupPolicyResult.h
+	include/alibabacloud/drds/model/DescribeBackupSetsRequest.h
+	include/alibabacloud/drds/model/DescribeBackupSetsResult.h
+	include/alibabacloud/drds/model/DescribeBackupTimesRequest.h
+	include/alibabacloud/drds/model/DescribeBackupTimesResult.h
+	include/alibabacloud/drds/model/DescribeBroadcastTablesRequest.h
+	include/alibabacloud/drds/model/DescribeBroadcastTablesResult.h
+	include/alibabacloud/drds/model/DescribeDbInstanceDbsRequest.h
+	include/alibabacloud/drds/model/DescribeDbInstanceDbsResult.h
+	include/alibabacloud/drds/model/DescribeDbInstancesRequest.h
+	include/alibabacloud/drds/model/DescribeDbInstancesResult.h
+	include/alibabacloud/drds/model/DescribeDrdsDBRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsDBResult.h
+	include/alibabacloud/drds/model/DescribeDrdsDBClusterRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsDBClusterResult.h
+	include/alibabacloud/drds/model/DescribeDrdsDBIpWhiteListRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsDBIpWhiteListResult.h
+	include/alibabacloud/drds/model/DescribeDrdsDBsRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsDBsResult.h
+	include/alibabacloud/drds/model/DescribeDrdsDbInstanceRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsDbInstanceResult.h
+	include/alibabacloud/drds/model/DescribeDrdsDbInstancesRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsDbInstancesResult.h
+	include/alibabacloud/drds/model/DescribeDrdsDbRdsNameListRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsDbRdsNameListResult.h
+	include/alibabacloud/drds/model/DescribeDrdsInstanceRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsInstanceResult.h
+	include/alibabacloud/drds/model/DescribeDrdsInstanceDbMonitorRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsInstanceDbMonitorResult.h
+	include/alibabacloud/drds/model/DescribeDrdsInstanceLevelTasksRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsInstanceLevelTasksResult.h
+	include/alibabacloud/drds/model/DescribeDrdsInstanceMonitorRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsInstanceMonitorResult.h
+	include/alibabacloud/drds/model/DescribeDrdsInstanceVersionRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsInstanceVersionResult.h
+	include/alibabacloud/drds/model/DescribeDrdsInstancesRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsInstancesResult.h
+	include/alibabacloud/drds/model/DescribeDrdsParamsRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsParamsResult.h
+	include/alibabacloud/drds/model/DescribeDrdsRdsInstancesRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsRdsInstancesResult.h
+	include/alibabacloud/drds/model/DescribeDrdsShardingDbsRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsShardingDbsResult.h
+	include/alibabacloud/drds/model/DescribeDrdsSlowSqlsRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsSlowSqlsResult.h
+	include/alibabacloud/drds/model/DescribeDrdsSqlAuditStatusRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsSqlAuditStatusResult.h
+	include/alibabacloud/drds/model/DescribeDrdsTasksRequest.h
+	include/alibabacloud/drds/model/DescribeDrdsTasksResult.h
+	include/alibabacloud/drds/model/DescribeExpandLogicTableInfoListRequest.h
+	include/alibabacloud/drds/model/DescribeExpandLogicTableInfoListResult.h
+	include/alibabacloud/drds/model/DescribeHotDbListRequest.h
+	include/alibabacloud/drds/model/DescribeHotDbListResult.h
+	include/alibabacloud/drds/model/DescribeInstDbLogInfoRequest.h
+	include/alibabacloud/drds/model/DescribeInstDbLogInfoResult.h
+	include/alibabacloud/drds/model/DescribeInstDbSlsInfoRequest.h
+	include/alibabacloud/drds/model/DescribeInstDbSlsInfoResult.h
+	include/alibabacloud/drds/model/DescribeInstanceAccountsRequest.h
+	include/alibabacloud/drds/model/DescribeInstanceAccountsResult.h
+	include/alibabacloud/drds/model/DescribeInstanceSwitchAzoneRequest.h
+	include/alibabacloud/drds/model/DescribeInstanceSwitchAzoneResult.h
+	include/alibabacloud/drds/model/DescribeInstanceSwitchNetworkRequest.h
+	include/alibabacloud/drds/model/DescribeInstanceSwitchNetworkResult.h
+	include/alibabacloud/drds/model/DescribePreCheckResultRequest.h
+	include/alibabacloud/drds/model/DescribePreCheckResultResult.h
+	include/alibabacloud/drds/model/DescribeRDSPerformanceRequest.h
+	include/alibabacloud/drds/model/DescribeRDSPerformanceResult.h
+	include/alibabacloud/drds/model/DescribeRdsCommodityRequest.h
+	include/alibabacloud/drds/model/DescribeRdsCommodityResult.h
+	include/alibabacloud/drds/model/DescribeRdsPerformanceSummaryRequest.h
+	include/alibabacloud/drds/model/DescribeRdsPerformanceSummaryResult.h
+	include/alibabacloud/drds/model/DescribeRdsSuperAccountInstancesRequest.h
+	include/alibabacloud/drds/model/DescribeRdsSuperAccountInstancesResult.h
+	include/alibabacloud/drds/model/DescribeRecycleBinStatusRequest.h
+	include/alibabacloud/drds/model/DescribeRecycleBinStatusResult.h
+	include/alibabacloud/drds/model/DescribeRecycleBinTablesRequest.h
+	include/alibabacloud/drds/model/DescribeRecycleBinTablesResult.h
+	include/alibabacloud/drds/model/DescribeRestoreOrderRequest.h
+	include/alibabacloud/drds/model/DescribeRestoreOrderResult.h
+	include/alibabacloud/drds/model/DescribeShardTaskInfoRequest.h
+	include/alibabacloud/drds/model/DescribeShardTaskInfoResult.h
+	include/alibabacloud/drds/model/DescribeSqlFlashbakTaskRequest.h
+	include/alibabacloud/drds/model/DescribeSqlFlashbakTaskResult.h
+	include/alibabacloud/drds/model/DescribeTableRequest.h
+	include/alibabacloud/drds/model/DescribeTableResult.h
+	include/alibabacloud/drds/model/DescribeTableListByTypeRequest.h
+	include/alibabacloud/drds/model/DescribeTableListByTypeResult.h
+	include/alibabacloud/drds/model/DescribeTablesRequest.h
+	include/alibabacloud/drds/model/DescribeTablesResult.h
+	include/alibabacloud/drds/model/DisableSqlAuditRequest.h
+	include/alibabacloud/drds/model/DisableSqlAuditResult.h
+	include/alibabacloud/drds/model/EnableInstanceIpv6AddressRequest.h
+	include/alibabacloud/drds/model/EnableInstanceIpv6AddressResult.h
+	include/alibabacloud/drds/model/EnableSqlAuditRequest.h
+	include/alibabacloud/drds/model/EnableSqlAuditResult.h
+	include/alibabacloud/drds/model/EnableSqlFlashbackMatchSwitchRequest.h
+	include/alibabacloud/drds/model/EnableSqlFlashbackMatchSwitchResult.h
+	include/alibabacloud/drds/model/FlashbackRecycleBinTableRequest.h
+	include/alibabacloud/drds/model/FlashbackRecycleBinTableResult.h
+	include/alibabacloud/drds/model/GetDrdsDbRdsRelationInfoRequest.h
+	include/alibabacloud/drds/model/GetDrdsDbRdsRelationInfoResult.h
+	include/alibabacloud/drds/model/ListTagResourcesRequest.h
+	include/alibabacloud/drds/model/ListTagResourcesResult.h
+	include/alibabacloud/drds/model/ManagePrivateRdsRequest.h
+	include/alibabacloud/drds/model/ManagePrivateRdsResult.h
+	include/alibabacloud/drds/model/ModifyAccountDescriptionRequest.h
+	include/alibabacloud/drds/model/ModifyAccountDescriptionResult.h
+	include/alibabacloud/drds/model/ModifyAccountPrivilegeRequest.h
+	include/alibabacloud/drds/model/ModifyAccountPrivilegeResult.h
+	include/alibabacloud/drds/model/ModifyDrdsInstanceDescriptionRequest.h
+	include/alibabacloud/drds/model/ModifyDrdsInstanceDescriptionResult.h
+	include/alibabacloud/drds/model/ModifyDrdsIpWhiteListRequest.h
+	include/alibabacloud/drds/model/ModifyDrdsIpWhiteListResult.h
+	include/alibabacloud/drds/model/ModifyPolarDbReadWeightRequest.h
+	include/alibabacloud/drds/model/ModifyPolarDbReadWeightResult.h
+	include/alibabacloud/drds/model/ModifyRdsReadWeightRequest.h
+	include/alibabacloud/drds/model/ModifyRdsReadWeightResult.h
+	include/alibabacloud/drds/model/PutStartBackupRequest.h
+	include/alibabacloud/drds/model/PutStartBackupResult.h
+	include/alibabacloud/drds/model/RefreshDrdsAtomUrlRequest.h
+	include/alibabacloud/drds/model/RefreshDrdsAtomUrlResult.h
+	include/alibabacloud/drds/model/ReleaseInstanceInternetAddressRequest.h
+	include/alibabacloud/drds/model/ReleaseInstanceInternetAddressResult.h
+	include/alibabacloud/drds/model/RemoveBackupsSetRequest.h
+	include/alibabacloud/drds/model/RemoveBackupsSetResult.h
+	include/alibabacloud/drds/model/RemoveDrdsDbRequest.h
+	include/alibabacloud/drds/model/RemoveDrdsDbResult.h
+	include/alibabacloud/drds/model/RemoveDrdsDbFailedRecordRequest.h
+	include/alibabacloud/drds/model/RemoveDrdsDbFailedRecordResult.h
+	include/alibabacloud/drds/model/RemoveDrdsInstanceRequest.h
+	include/alibabacloud/drds/model/RemoveDrdsInstanceResult.h
+	include/alibabacloud/drds/model/RemoveInstanceAccountRequest.h
+	include/alibabacloud/drds/model/RemoveInstanceAccountResult.h
+	include/alibabacloud/drds/model/RemoveRecycleBinTableRequest.h
+	include/alibabacloud/drds/model/RemoveRecycleBinTableResult.h
+	include/alibabacloud/drds/model/RestartDrdsInstanceRequest.h
+	include/alibabacloud/drds/model/RestartDrdsInstanceResult.h
+	include/alibabacloud/drds/model/RollbackInstanceVersionRequest.h
+	include/alibabacloud/drds/model/RollbackInstanceVersionResult.h
+	include/alibabacloud/drds/model/SetBackupLocalRequest.h
+	include/alibabacloud/drds/model/SetBackupLocalResult.h
+	include/alibabacloud/drds/model/SetBackupPolicyRequest.h
+	include/alibabacloud/drds/model/SetBackupPolicyResult.h
+	include/alibabacloud/drds/model/SetupBroadcastTablesRequest.h
+	include/alibabacloud/drds/model/SetupBroadcastTablesResult.h
+	include/alibabacloud/drds/model/SetupDrdsParamsRequest.h
+	include/alibabacloud/drds/model/SetupDrdsParamsResult.h
+	include/alibabacloud/drds/model/SetupRecycleBinStatusRequest.h
+	include/alibabacloud/drds/model/SetupRecycleBinStatusResult.h
+	include/alibabacloud/drds/model/SetupTableRequest.h
+	include/alibabacloud/drds/model/SetupTableResult.h
+	include/alibabacloud/drds/model/StartRestoreRequest.h
+	include/alibabacloud/drds/model/StartRestoreResult.h
+	include/alibabacloud/drds/model/SubmitCleanTaskRequest.h
+	include/alibabacloud/drds/model/SubmitCleanTaskResult.h
+	include/alibabacloud/drds/model/SubmitHotExpandPreCheckTaskRequest.h
+	include/alibabacloud/drds/model/SubmitHotExpandPreCheckTaskResult.h
+	include/alibabacloud/drds/model/SubmitHotExpandTaskRequest.h
+	include/alibabacloud/drds/model/SubmitHotExpandTaskResult.h
+	include/alibabacloud/drds/model/SubmitSmoothExpandPreCheckRequest.h
+	include/alibabacloud/drds/model/SubmitSmoothExpandPreCheckResult.h
+	include/alibabacloud/drds/model/SubmitSmoothExpandPreCheckTaskRequest.h
+	include/alibabacloud/drds/model/SubmitSmoothExpandPreCheckTaskResult.h
+	include/alibabacloud/drds/model/SubmitSqlFlashbackTaskRequest.h
+	include/alibabacloud/drds/model/SubmitSqlFlashbackTaskResult.h
+	include/alibabacloud/drds/model/SwitchGlobalBroadcastTypeRequest.h
+	include/alibabacloud/drds/model/SwitchGlobalBroadcastTypeResult.h
+	include/alibabacloud/drds/model/TagResourcesRequest.h
+	include/alibabacloud/drds/model/TagResourcesResult.h
+	include/alibabacloud/drds/model/UntagResourcesRequest.h
+	include/alibabacloud/drds/model/UntagResourcesResult.h
+	include/alibabacloud/drds/model/UpdateInstanceNetworkRequest.h
+	include/alibabacloud/drds/model/UpdateInstanceNetworkResult.h
+	include/alibabacloud/drds/model/UpdatePrivateRdsClassRequest.h
+	include/alibabacloud/drds/model/UpdatePrivateRdsClassResult.h
+	include/alibabacloud/drds/model/UpdateResourceGroupAttributeRequest.h
+	include/alibabacloud/drds/model/UpdateResourceGroupAttributeResult.h
+	include/alibabacloud/drds/model/UpgradeHiStoreInstanceRequest.h
+	include/alibabacloud/drds/model/UpgradeHiStoreInstanceResult.h
+	include/alibabacloud/drds/model/UpgradeInstanceVersionRequest.h
+	include/alibabacloud/drds/model/UpgradeInstanceVersionResult.h
+	include/alibabacloud/drds/model/ValidateShardTaskRequest.h
+	include/alibabacloud/drds/model/ValidateShardTaskResult.h )
+
+set(drds_src 
+	src/DrdsClient.cc
+	src/model/ChangeAccountPasswordRequest.cc
+	src/model/ChangeAccountPasswordResult.cc
+	src/model/ChangeInstanceAzoneRequest.cc
+	src/model/ChangeInstanceAzoneResult.cc
+	src/model/CheckDrdsDbNameRequest.cc
+	src/model/CheckDrdsDbNameResult.cc
+	src/model/CheckExpandStatusRequest.cc
+	src/model/CheckExpandStatusResult.cc
+	src/model/CheckSqlAuditEnableStatusRequest.cc
+	src/model/CheckSqlAuditEnableStatusResult.cc
+	src/model/CreateDrdsDBRequest.cc
+	src/model/CreateDrdsDBResult.cc
+	src/model/CreateDrdsInstanceRequest.cc
+	src/model/CreateDrdsInstanceResult.cc
+	src/model/CreateInstanceAccountRequest.cc
+	src/model/CreateInstanceAccountResult.cc
+	src/model/CreateInstanceInternetAddressRequest.cc
+	src/model/CreateInstanceInternetAddressResult.cc
+	src/model/CreateOrderForRdsRequest.cc
+	src/model/CreateOrderForRdsResult.cc
+	src/model/CreateShardTaskRequest.cc
+	src/model/CreateShardTaskResult.cc
+	src/model/DescribeBackMenuRequest.cc
+	src/model/DescribeBackMenuResult.cc
+	src/model/DescribeBackupDbsRequest.cc
+	src/model/DescribeBackupDbsResult.cc
+	src/model/DescribeBackupLocalRequest.cc
+	src/model/DescribeBackupLocalResult.cc
+	src/model/DescribeBackupPolicyRequest.cc
+	src/model/DescribeBackupPolicyResult.cc
+	src/model/DescribeBackupSetsRequest.cc
+	src/model/DescribeBackupSetsResult.cc
+	src/model/DescribeBackupTimesRequest.cc
+	src/model/DescribeBackupTimesResult.cc
+	src/model/DescribeBroadcastTablesRequest.cc
+	src/model/DescribeBroadcastTablesResult.cc
+	src/model/DescribeDbInstanceDbsRequest.cc
+	src/model/DescribeDbInstanceDbsResult.cc
+	src/model/DescribeDbInstancesRequest.cc
+	src/model/DescribeDbInstancesResult.cc
+	src/model/DescribeDrdsDBRequest.cc
+	src/model/DescribeDrdsDBResult.cc
+	src/model/DescribeDrdsDBClusterRequest.cc
+	src/model/DescribeDrdsDBClusterResult.cc
+	src/model/DescribeDrdsDBIpWhiteListRequest.cc
+	src/model/DescribeDrdsDBIpWhiteListResult.cc
+	src/model/DescribeDrdsDBsRequest.cc
+	src/model/DescribeDrdsDBsResult.cc
+	src/model/DescribeDrdsDbInstanceRequest.cc
+	src/model/DescribeDrdsDbInstanceResult.cc
+	src/model/DescribeDrdsDbInstancesRequest.cc
+	src/model/DescribeDrdsDbInstancesResult.cc
+	src/model/DescribeDrdsDbRdsNameListRequest.cc
+	src/model/DescribeDrdsDbRdsNameListResult.cc
+	src/model/DescribeDrdsInstanceRequest.cc
+	src/model/DescribeDrdsInstanceResult.cc
+	src/model/DescribeDrdsInstanceDbMonitorRequest.cc
+	src/model/DescribeDrdsInstanceDbMonitorResult.cc
+	src/model/DescribeDrdsInstanceLevelTasksRequest.cc
+	src/model/DescribeDrdsInstanceLevelTasksResult.cc
+	src/model/DescribeDrdsInstanceMonitorRequest.cc
+	src/model/DescribeDrdsInstanceMonitorResult.cc
+	src/model/DescribeDrdsInstanceVersionRequest.cc
+	src/model/DescribeDrdsInstanceVersionResult.cc
+	src/model/DescribeDrdsInstancesRequest.cc
+	src/model/DescribeDrdsInstancesResult.cc
+	src/model/DescribeDrdsParamsRequest.cc
+	src/model/DescribeDrdsParamsResult.cc
+	src/model/DescribeDrdsRdsInstancesRequest.cc
+	src/model/DescribeDrdsRdsInstancesResult.cc
+	src/model/DescribeDrdsShardingDbsRequest.cc
+	src/model/DescribeDrdsShardingDbsResult.cc
+	src/model/DescribeDrdsSlowSqlsRequest.cc
+	src/model/DescribeDrdsSlowSqlsResult.cc
+	src/model/DescribeDrdsSqlAuditStatusRequest.cc
+	src/model/DescribeDrdsSqlAuditStatusResult.cc
+	src/model/DescribeDrdsTasksRequest.cc
+	src/model/DescribeDrdsTasksResult.cc
+	src/model/DescribeExpandLogicTableInfoListRequest.cc
+	src/model/DescribeExpandLogicTableInfoListResult.cc
+	src/model/DescribeHotDbListRequest.cc
+	src/model/DescribeHotDbListResult.cc
+	src/model/DescribeInstDbLogInfoRequest.cc
+	src/model/DescribeInstDbLogInfoResult.cc
+	src/model/DescribeInstDbSlsInfoRequest.cc
+	src/model/DescribeInstDbSlsInfoResult.cc
+	src/model/DescribeInstanceAccountsRequest.cc
+	src/model/DescribeInstanceAccountsResult.cc
+	src/model/DescribeInstanceSwitchAzoneRequest.cc
+	src/model/DescribeInstanceSwitchAzoneResult.cc
+	src/model/DescribeInstanceSwitchNetworkRequest.cc
+	src/model/DescribeInstanceSwitchNetworkResult.cc
+	src/model/DescribePreCheckResultRequest.cc
+	src/model/DescribePreCheckResultResult.cc
+	src/model/DescribeRDSPerformanceRequest.cc
+	src/model/DescribeRDSPerformanceResult.cc
+	src/model/DescribeRdsCommodityRequest.cc
+	src/model/DescribeRdsCommodityResult.cc
+	src/model/DescribeRdsPerformanceSummaryRequest.cc
+	src/model/DescribeRdsPerformanceSummaryResult.cc
+	src/model/DescribeRdsSuperAccountInstancesRequest.cc
+	src/model/DescribeRdsSuperAccountInstancesResult.cc
+	src/model/DescribeRecycleBinStatusRequest.cc
+	src/model/DescribeRecycleBinStatusResult.cc
+	src/model/DescribeRecycleBinTablesRequest.cc
+	src/model/DescribeRecycleBinTablesResult.cc
+	src/model/DescribeRestoreOrderRequest.cc
+	src/model/DescribeRestoreOrderResult.cc
+	src/model/DescribeShardTaskInfoRequest.cc
+	src/model/DescribeShardTaskInfoResult.cc
+	src/model/DescribeSqlFlashbakTaskRequest.cc
+	src/model/DescribeSqlFlashbakTaskResult.cc
+	src/model/DescribeTableRequest.cc
+	src/model/DescribeTableResult.cc
+	src/model/DescribeTableListByTypeRequest.cc
+	src/model/DescribeTableListByTypeResult.cc
+	src/model/DescribeTablesRequest.cc
+	src/model/DescribeTablesResult.cc
+	src/model/DisableSqlAuditRequest.cc
+	src/model/DisableSqlAuditResult.cc
+	src/model/EnableInstanceIpv6AddressRequest.cc
+	src/model/EnableInstanceIpv6AddressResult.cc
+	src/model/EnableSqlAuditRequest.cc
+	src/model/EnableSqlAuditResult.cc
+	src/model/EnableSqlFlashbackMatchSwitchRequest.cc
+	src/model/EnableSqlFlashbackMatchSwitchResult.cc
+	src/model/FlashbackRecycleBinTableRequest.cc
+	src/model/FlashbackRecycleBinTableResult.cc
+	src/model/GetDrdsDbRdsRelationInfoRequest.cc
+	src/model/GetDrdsDbRdsRelationInfoResult.cc
+	src/model/ListTagResourcesRequest.cc
+	src/model/ListTagResourcesResult.cc
+	src/model/ManagePrivateRdsRequest.cc
+	src/model/ManagePrivateRdsResult.cc
+	src/model/ModifyAccountDescriptionRequest.cc
+	src/model/ModifyAccountDescriptionResult.cc
+	src/model/ModifyAccountPrivilegeRequest.cc
+	src/model/ModifyAccountPrivilegeResult.cc
+	src/model/ModifyDrdsInstanceDescriptionRequest.cc
+	src/model/ModifyDrdsInstanceDescriptionResult.cc
+	src/model/ModifyDrdsIpWhiteListRequest.cc
+	src/model/ModifyDrdsIpWhiteListResult.cc
+	src/model/ModifyPolarDbReadWeightRequest.cc
+	src/model/ModifyPolarDbReadWeightResult.cc
+	src/model/ModifyRdsReadWeightRequest.cc
+	src/model/ModifyRdsReadWeightResult.cc
+	src/model/PutStartBackupRequest.cc
+	src/model/PutStartBackupResult.cc
+	src/model/RefreshDrdsAtomUrlRequest.cc
+	src/model/RefreshDrdsAtomUrlResult.cc
+	src/model/ReleaseInstanceInternetAddressRequest.cc
+	src/model/ReleaseInstanceInternetAddressResult.cc
+	src/model/RemoveBackupsSetRequest.cc
+	src/model/RemoveBackupsSetResult.cc
+	src/model/RemoveDrdsDbRequest.cc
+	src/model/RemoveDrdsDbResult.cc
+	src/model/RemoveDrdsDbFailedRecordRequest.cc
+	src/model/RemoveDrdsDbFailedRecordResult.cc
+	src/model/RemoveDrdsInstanceRequest.cc
+	src/model/RemoveDrdsInstanceResult.cc
+	src/model/RemoveInstanceAccountRequest.cc
+	src/model/RemoveInstanceAccountResult.cc
+	src/model/RemoveRecycleBinTableRequest.cc
+	src/model/RemoveRecycleBinTableResult.cc
+	src/model/RestartDrdsInstanceRequest.cc
+	src/model/RestartDrdsInstanceResult.cc
+	src/model/RollbackInstanceVersionRequest.cc
+	src/model/RollbackInstanceVersionResult.cc
+	src/model/SetBackupLocalRequest.cc
+	src/model/SetBackupLocalResult.cc
+	src/model/SetBackupPolicyRequest.cc
+	src/model/SetBackupPolicyResult.cc
+	src/model/SetupBroadcastTablesRequest.cc
+	src/model/SetupBroadcastTablesResult.cc
+	src/model/SetupDrdsParamsRequest.cc
+	src/model/SetupDrdsParamsResult.cc
+	src/model/SetupRecycleBinStatusRequest.cc
+	src/model/SetupRecycleBinStatusResult.cc
+	src/model/SetupTableRequest.cc
+	src/model/SetupTableResult.cc
+	src/model/StartRestoreRequest.cc
+	src/model/StartRestoreResult.cc
+	src/model/SubmitCleanTaskRequest.cc
+	src/model/SubmitCleanTaskResult.cc
+	src/model/SubmitHotExpandPreCheckTaskRequest.cc
+	src/model/SubmitHotExpandPreCheckTaskResult.cc
+	src/model/SubmitHotExpandTaskRequest.cc
+	src/model/SubmitHotExpandTaskResult.cc
+	src/model/SubmitSmoothExpandPreCheckRequest.cc
+	src/model/SubmitSmoothExpandPreCheckResult.cc
+	src/model/SubmitSmoothExpandPreCheckTaskRequest.cc
+	src/model/SubmitSmoothExpandPreCheckTaskResult.cc
+	src/model/SubmitSqlFlashbackTaskRequest.cc
+	src/model/SubmitSqlFlashbackTaskResult.cc
+	src/model/SwitchGlobalBroadcastTypeRequest.cc
+	src/model/SwitchGlobalBroadcastTypeResult.cc
+	src/model/TagResourcesRequest.cc
+	src/model/TagResourcesResult.cc
+	src/model/UntagResourcesRequest.cc
+	src/model/UntagResourcesResult.cc
+	src/model/UpdateInstanceNetworkRequest.cc
+	src/model/UpdateInstanceNetworkResult.cc
+	src/model/UpdatePrivateRdsClassRequest.cc
+	src/model/UpdatePrivateRdsClassResult.cc
+	src/model/UpdateResourceGroupAttributeRequest.cc
+	src/model/UpdateResourceGroupAttributeResult.cc
+	src/model/UpgradeHiStoreInstanceRequest.cc
+	src/model/UpgradeHiStoreInstanceResult.cc
+	src/model/UpgradeInstanceVersionRequest.cc
+	src/model/UpgradeInstanceVersionResult.cc
+	src/model/ValidateShardTaskRequest.cc
+	src/model/ValidateShardTaskResult.cc )
+
+add_library(drds ${LIB_TYPE}
+	${drds_public_header}
+	${drds_public_header_model}
+	${drds_src})
+
+set_target_properties(drds
+	PROPERTIES
+	LINKER_LANGUAGE CXX
+	ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+	LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+	OUTPUT_NAME ${TARGET_OUTPUT_NAME_PREFIX}drds
+	)
+
+if(${LIB_TYPE} STREQUAL "SHARED")
+	set_target_properties(drds
+		PROPERTIES
+		DEFINE_SYMBOL ALIBABACLOUD_DRDS_LIBRARY)
+endif()
+
+target_include_directories(drds
+	PRIVATE include
+		${CMAKE_SOURCE_DIR}/core/include
+	)
+target_link_libraries(drds
+	core)
+
+if(CMAKE_HOST_WIN32)
+	ExternalProject_Get_Property(jsoncpp INSTALL_DIR)
+	set(jsoncpp_install_dir ${INSTALL_DIR})
+	add_dependencies(drds
+		jsoncpp)
+	target_include_directories(drds
+		PRIVATE	${jsoncpp_install_dir}/include)
+	target_link_libraries(drds
+		${jsoncpp_install_dir}/lib/jsoncpp.lib)
+	set_target_properties(drds
+    	PROPERTIES
+    		COMPILE_OPTIONS "/bigobj")
+else()
+	target_include_directories(drds
+		PRIVATE /usr/include/jsoncpp)
+	target_link_libraries(drds
+		jsoncpp)
+endif()
+
+install(FILES ${drds_public_header}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/alibabacloud/drds)
+install(FILES ${drds_public_header_model}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/alibabacloud/drds/model)
+install(TARGETS drds
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	)
