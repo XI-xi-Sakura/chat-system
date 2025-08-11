@@ -1,0 +1,7 @@
+/home/ubuntu/chat-system/server/user/build/CMakeFiles/install/local.dir
+/home/ubuntu/chat-system/server/user/build/CMakeFiles/install.dir
+/home/ubuntu/chat-system/server/user/build/CMakeFiles/list_install_components.dir
+/home/ubuntu/chat-system/server/user/build/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/chat-system/server/user/build/CMakeFiles/edit_cache.dir
+/home/ubuntu/chat-system/server/user/build/CMakeFiles/install/strip.dir
+/home/ubuntu/chat-system/server/user/build/CMakeFiles/user_server.dir
