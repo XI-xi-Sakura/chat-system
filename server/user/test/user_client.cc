@@ -152,10 +152,12 @@ void set_user_avatar(const std::string &uid, const std::string &avatar) {
 //     req.add_users_id("用户ID1");
 //     req.add_users_id("用户ID2");
 //     req.add_users_id("ee55-9043bfd7-0001");
+
 //     bite_im::GetMultiUserInfoRsp rsp;
 //     brpc::Controller cntl;
 //     bite_im::UserService_Stub stub(channel.get());
 //     stub.GetMultiUserInfo(&cntl, &req, &rsp, nullptr);
+
 //     ASSERT_FALSE(cntl.Failed());
 //     ASSERT_TRUE(rsp.success());
 //     auto users_map = rsp.mutable_users_info();
