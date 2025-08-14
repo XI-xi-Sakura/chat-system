@@ -293,6 +293,24 @@ namespace bite_im
             _should.append(match);
             return *this;
         }
+        // GET /message/_doc/_search?pretty
+        // {
+        //     "query" : {
+        //         "bool" : {
+        //             "must" : [
+        //                 {
+        //                     "term" : { "chat_session_id.keyword" : "会话ID1" }
+        //                 },
+        //                 {
+        //                     "match" : { "content" : "盖浇饭" }
+        //                 }
+        //             ]
+        //         }
+        //     }
+        // }
+
+        // term：精确匹配查询，查找 chat_session_id.keyword 字段值为 会话ID1 的文档。
+        // match：全文匹配查询，查找 content 字段包含 盖浇饭 的文档。
 
         ESSearch &append_must_term(const std::string &key, const std::string &val)
         {
