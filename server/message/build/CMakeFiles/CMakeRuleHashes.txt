@@ -1,0 +1,6 @@
+# Hashes of file build rules.
+1f9b267b22c5cb27d0a4c20eb55d280a base.pb.cc
+f06e6ab639ad3a56e264149ac53907ba file.pb.cc
+286b6e141a8535c0893399c3f5620cac message-odb.cxx
+d87e2c3138c70eecc4939d21f008ce68 message.pb.cc
+cf4232e0a1b0382a767dd52b43e9b219 user.pb.cc
