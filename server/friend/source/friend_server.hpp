@@ -421,6 +421,8 @@ namespace bite_im
                 LOG_ERROR("{} - 向数据库添加会话信息失败: {}", rid, cssname);
                 return err_response(rid, "向数据库添加会话信息失败!");
             }
+
+
             std::vector<ChatSessionMember> member_list;
             for (int i = 0; i < request->member_id_list_size(); i++)
             {
@@ -433,6 +435,7 @@ namespace bite_im
                 LOG_ERROR("{} - 向数据库添加会话成员信息失败: {}", rid, cssname);
                 return err_response(rid, "向数据库添加会话成员信息失败!");
             }
+            
             // 3. 组织响应---组织会话信息
             response->set_request_id(rid);
             response->set_success(true);
