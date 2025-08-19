@@ -1,0 +1,7 @@
+/home/ubuntu/chat-system/server/gateway/test/CMakeFiles/install/local.dir
+/home/ubuntu/chat-system/server/gateway/test/CMakeFiles/install.dir
+/home/ubuntu/chat-system/server/gateway/test/CMakeFiles/list_install_components.dir
+/home/ubuntu/chat-system/server/gateway/test/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/chat-system/server/gateway/test/CMakeFiles/edit_cache.dir
+/home/ubuntu/chat-system/server/gateway/test/CMakeFiles/install/strip.dir
+/home/ubuntu/chat-system/server/gateway/test/CMakeFiles/gateway_server.dir
